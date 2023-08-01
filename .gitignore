@@ -1,0 +1,9 @@
+# General
+log/
+*.log
+# Mac
+.DS_Store
+#vendor
+vendor/
+#composer
+*.lock
