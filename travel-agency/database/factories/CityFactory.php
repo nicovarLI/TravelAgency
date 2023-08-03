@@ -18,6 +18,8 @@ class CityFactory extends Factory
     {
         return [
             'name' => fake()->city(),
+            'arrivals' => fake()->randomNumber(3),
+            'departures' => fake()->randomNumber(3)
         ];
     }
 }
