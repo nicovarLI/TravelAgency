@@ -5,13 +5,15 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreCityRequest;
 use App\Http\Requests\UpdateCityRequest;
 use App\Models\City;
+use Illuminate\Contracts\View\View;
+use Illuminate\Support\Facades\Redirect;
 
 class CityController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(): View
     {
         return view('cities', [
             'cities' => City::all()
@@ -21,7 +23,7 @@ class CityController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function store()
+    public function store(): string
     {
         $attributes = request()->validate([
             'name' => ['required', 'max:255']
