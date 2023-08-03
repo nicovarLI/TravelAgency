@@ -23,7 +23,12 @@ class CityController extends Controller
      */
     public function create()
     {
-        //
+        $attributes = request()->validate([
+            'name' => ['required', 'max:255']
+        ]);
+        $city = City::create($attributes);
+
+        return redirect('/')->with('success','City has been created');
     }
 
     /**
