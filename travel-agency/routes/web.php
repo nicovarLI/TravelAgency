@@ -18,4 +18,4 @@ use Illuminate\Support\Facades\Route;
 //     return view('cities');
 // });
 Route::get('/', [CityController::class, 'index'])->name('home');
-Route::post('/', [CityController::class, 'create']);
+Route::post('/', [CityController::class, 'store']);

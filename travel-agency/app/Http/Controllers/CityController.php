@@ -21,7 +21,7 @@ class CityController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function store()
     {
         $attributes = request()->validate([
             'name' => ['required', 'max:255']
