@@ -13,7 +13,9 @@ class CityController extends Controller
      */
     public function index()
     {
-        //
+        return view('cities', [
+            'cities' => City::all()
+        ]);
     }
 
     /**
@@ -27,10 +29,6 @@ class CityController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreCityRequest $request)
-    {
-        //
-    }
 
     /**
      * Display the specified resource.
@@ -51,10 +49,6 @@ class CityController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateCityRequest $request, City $city)
-    {
-        //
-    }
 
     /**
      * Remove the specified resource from storage.
