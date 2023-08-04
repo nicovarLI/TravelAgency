@@ -7,6 +7,7 @@ use App\Http\Requests\UpdateCityRequest;
 use App\Models\City;
 use Illuminate\Contracts\View\View;
 use Illuminate\Support\Facades\Redirect;
+use Ramsey\Uuid\Type\Integer;
 
 class CityController extends Controller
 {
@@ -60,8 +61,10 @@ class CityController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(City $city)
+    public function destroy(): string
     {
-        //
+        City::destroy(request()->id);
+
+        return redirect('/')->with('success','City has been deleted');
     }
 }
