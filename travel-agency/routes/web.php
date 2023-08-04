@@ -13,9 +13,6 @@ use Illuminate\Support\Facades\Route;
 | be assigned to the "web" middleware group. Make something great!
 |
 */
-
-// Route::get('/', function () {
-//     return view('cities');
-// });
 Route::get('/', [CityController::class, 'index'])->name('home');
 Route::post('/', [CityController::class, 'store']);
+Route::delete('/', [CityController::class, 'destroy']);
