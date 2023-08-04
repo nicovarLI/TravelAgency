@@ -26,7 +26,7 @@ class CityController extends Controller
     public function store(): string
     {
         $attributes = request()->validate([
-            'name' => ['required', 'max:255']
+            'name' => ['required', 'max:255','min:2','unique:cities,name']
         ]);
         $city = City::create($attributes);
 

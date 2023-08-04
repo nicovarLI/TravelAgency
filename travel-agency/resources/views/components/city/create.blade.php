@@ -20,13 +20,6 @@
                     Submit
                 </button>
             </div>
-            @if ($errors->any())
-                @foreach ($errors->all() as $error)
-                    <ul class="text-red-500 text-xs">
-                        {{ $error }}
-                    </ul>
-                @endforeach
-            @endif
         </form>
     </main>
 </section>
