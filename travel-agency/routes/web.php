@@ -16,3 +16,4 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', [CityController::class, 'index'])->name('home');
 Route::post('/', [CityController::class, 'store']);
 Route::delete('/', [CityController::class, 'destroy']);
+Route::patch('/', [CityController::class, 'update']);

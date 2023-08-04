@@ -2,12 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\StoreCityRequest;
-use App\Http\Requests\UpdateCityRequest;
 use App\Models\City;
 use Illuminate\Contracts\View\View;
-use Illuminate\Support\Facades\Redirect;
-use Ramsey\Uuid\Type\Integer;
 
 class CityController extends Controller
 {
@@ -49,9 +45,15 @@ class CityController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(City $city)
+    public function update(): string
     {
-        //
+        $attributes = request()->validate([
+            'name' => ['max:255','min:2','unique:cities,name']
+        ]);
+        $city = City::find(request()->id);
+        $city->name = $attributes['name'];
+        $city->save();
+        return redirect('/')->with('success','City has been updated successfully!');
     }
 
     /**
@@ -65,6 +67,6 @@ class CityController extends Controller
     {
         City::destroy(request()->id);
 
-        return redirect('/')->with('success','City has been deleted');
+        return redirect('/')->with('success','City has been deleted successfully');
     }
 }

@@ -8,7 +8,7 @@
 
                     Name
                 </label>
-                <input class="border border-gray-400 p-2 w-full" type="text" name="name" id="name"
+                <input class="border border-gray-400 rounded-xl p-2 w-full" type="text" name="name" id="name"
                     value="{{ old('name') }}" required>
 
                 @error('name')
