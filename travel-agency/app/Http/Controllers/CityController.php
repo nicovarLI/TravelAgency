@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\City;
 use Illuminate\Contracts\View\View;
+use Illuminate\Http\JsonResponse;
 
 class CityController extends Controller
 {
@@ -20,14 +21,14 @@ class CityController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function store(): string
+    public function store(): JsonResponse
     {
         $attributes = request()->validate([
             'name' => ['required', 'max:255','min:2','unique:cities,name']
         ]);
-        $city = City::create($attributes);
+        City::create($attributes);
 
-        return redirect('/')->with('success','City has been created');
+        return response()->json(['success'=>'City has been created']);
     }
 
     /**

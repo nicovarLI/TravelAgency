@@ -1,8 +1,7 @@
 <section class="px-6 py-8">
     <main class="max-w-lg w-1/2 mx-auto mt-4 bg-gray-100 p-6 rounded-xl border-gray-200">
         <h1 class="text-center font-bold text-xl">Create City</h1>
-        <form method="POST" action="/">
-            @csrf
+        <form id="add-city-form">
             <div class="mb-6 mt-2">
                 <label class="block mb-2 uppercase font-bold text-xs text-gray-700" for="name">
 
