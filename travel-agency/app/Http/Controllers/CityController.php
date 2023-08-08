@@ -23,12 +23,16 @@ class CityController extends Controller
      */
     public function store(): JsonResponse
     {
+
         $attributes = request()->validate([
             'name' => ['required', 'max:255','min:2','unique:cities,name']
         ]);
         City::create($attributes);
+        $updatedCitiesTable = view('components.table', [
+            'cities' => City::all()
+        ])->render();
 
-        return response()->json(['success'=>'City has been created']);
+        return response()->json(['updatedCitiesTable'=> $updatedCitiesTable]);
     }
 
     /**

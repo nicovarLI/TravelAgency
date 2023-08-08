@@ -1,6 +1,5 @@
 @props(['cities'])
 
-<section class="flex py-2 bg-gray-100 rounded-xl border justify-center">
     <table class="w-4/5 flex-1 text-center" id="cities-table">
         <thead>
             <tr>
@@ -44,4 +43,3 @@
             @endforeach
         </tbody>
     </table>
-</section>
