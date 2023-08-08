@@ -6,9 +6,7 @@
         <td class="py-3 flex justify-center">
             <p x-show="show" class="text-sm text-gray-900">{{$city->name}}</p>
 
-            <form x-show="!show" class="flex" method="POST" action="/">
-                @method('PATCH')
-                @csrf
+            <form x-show="!show" id="cities-update-form" class="flex">
                 <input type="hidden" name="id" value="{{$city->id}}"/>
                 <div>
                     <input class="border rounded-xl border-gray-400 p-2 mx-2" type="text" name="name" id="name"
@@ -19,7 +17,7 @@
                     @enderror
                 </div>
                 <div>
-                    <button @click="show = ! show" type="submit" class="bg-blue-400 text-white rounded-full py-2 px-4 hover:bg-blue-500">
+                    <button @click="show = ! show" onclick="updateCity()" type="button" class="bg-blue-400 text-white rounded-full py-2 px-4 hover:bg-blue-500">
                         ✓
                     </button>
                 </div>
@@ -37,11 +35,9 @@
             </button>
         </td>
         <td>
-            <form method="POST" action="/">
-                @method('DELETE')
-                @csrf
+            <form id="cities-delete-form">
                 <input type="hidden" name="id" value="{{$city->id}}"/>
-                <button type="submit"class="text-xs bg-red-400 text-white hover:bg-white hover:text-red-500 p-2 px-4 rounded-full">
+                <button onclick="deleteCity()" type="button" class="text-xs bg-red-400 text-white hover:bg-white hover:text-red-500 p-2 px-4 rounded-full">
                     Delete
                 </button>
             </form>

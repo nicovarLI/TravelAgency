@@ -3,10 +3,13 @@ $.ajaxSetup({
         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
     }
 });
-
-$('#add-city-form').on('submit', function(event){
+$('form').submit(function(event){
     event.preventDefault();
-    var formData = $(this).serializeArray();
+    console.log("prevented default");
+})
+function createCity(){
+    var form = $('#add-city-form');
+    var formData = $(form).serializeArray();
     var jsonData = {};
 
     $.each(formData, function(_,field){
@@ -29,4 +32,58 @@ $('#add-city-form').on('submit', function(event){
             console.error(xhr.responseText)
         }
     });
-})
+}
+
+function deleteCity(){
+    var form = $('#cities-delete-form');
+    var formData = $(form).serializeArray();
+    var jsonData = {};
+
+    $.each(formData, function(_,field){
+        jsonData[field.name] = field.value;
+    });
+
+    $.ajax({
+        url: '/',
+        method: 'DELETE',
+        data: JSON.stringify(jsonData),
+        dataType: 'JSON',
+        contentType: 'application/json',
+        cache: false,
+        processData: false,
+        success:function(response)
+        {
+            $('#cities-table').html(response.updatedCitiesTable)
+        },
+        error: function(xhr, status, error) {
+            console.error(xhr.responseText)
+        }
+    });
+}
+
+function updateCity(){
+    var form = $('#cities-update-form');
+    var formData = $(form).serializeArray();
+    var jsonData = {};
+
+    $.each(formData, function(_,field){
+        jsonData[field.name] = field.value;
+    });
+
+    $.ajax({
+        url: '/',
+        method: 'PATCH',
+        data: JSON.stringify(jsonData),
+        dataType: 'JSON',
+        contentType: 'application/json',
+        cache: false,
+        processData: false,
+        success:function(response)
+        {
+            $('#cities-table-row').html(response.updatedRow)
+        },
+        error: function(xhr, status, error) {
+            console.error(xhr.responseText)
+        }
+    });
+}

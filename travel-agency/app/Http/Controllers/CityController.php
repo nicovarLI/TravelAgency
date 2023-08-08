@@ -8,9 +8,6 @@ use Illuminate\Http\JsonResponse;
 
 class CityController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index(): View
     {
         return view('cities', [
@@ -18,9 +15,6 @@ class CityController extends Controller
         ]);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
     public function store(): JsonResponse
     {
 
@@ -28,17 +22,10 @@ class CityController extends Controller
             'name' => ['required', 'max:255','min:2','unique:cities,name']
         ]);
         City::create($attributes);
-        $updatedCitiesTable = view('components.table', [
-            'cities' => City::all()
-        ])->render();
+        $updatedCitiesTable = $this->updateTable();
 
         return response()->json(['updatedCitiesTable'=> $updatedCitiesTable]);
     }
-
-    /**
-     * Store a newly created resource in storage.
-     */
-
     /**
      * Display the specified resource.
      */
@@ -47,10 +34,7 @@ class CityController extends Controller
         //
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function update(): string
+    public function update(): JsonResponse
     {
         $attributes = request()->validate([
             'name' => ['max:255','min:2','unique:cities,name']
@@ -58,20 +42,22 @@ class CityController extends Controller
         $city = City::find(request()->id);
         $city->name = $attributes['name'];
         $city->save();
-        return redirect('/')->with('success','City has been updated successfully!');
+        $updatedRow = view('components.table-row',[
+            'city' => $city
+        ])->render();
+        return response()->json(['updatedRow'=>$updatedRow]);
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(): string
+    public function destroy(): jsonResponse
     {
         City::destroy(request()->id);
+        return response()->json(['updatedCitiesTable'=> $this->updateTable()]);
+    }
 
-        return redirect('/')->with('success','City has been deleted successfully');
+    private function updateTable(): string
+    {
+        return view('components.table', [
+            'cities' => City::all()
+        ])->render();
     }
 }
