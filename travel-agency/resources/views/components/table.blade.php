@@ -39,7 +39,9 @@
                 </tr>
             @endif
             @foreach ($cities as $city)
+
                 <x-table-row :city="$city" />
+
             @endforeach
         </tbody>
     </table>

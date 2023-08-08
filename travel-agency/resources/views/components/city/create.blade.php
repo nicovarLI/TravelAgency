@@ -15,7 +15,7 @@
                 @enderror
             </div>
             <div class="mb-6 flex justify-center">
-                <button onclick="createCity()" type="submit" class="bg-blue-400 text-white rounded py-2 px-4 hover:bg-blue-500">
+                <button onclick="createCity()" type="submit" class="bg-blue-400 text-white hover:bg-white action:bg-red-500r hover:text-blue-500 rounded-full py-2 px-4">
                     Submit
                 </button>
             </div>

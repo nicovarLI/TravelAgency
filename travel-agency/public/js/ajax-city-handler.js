@@ -80,7 +80,7 @@ function updateCity(){
         processData: false,
         success:function(response)
         {
-            $('#cities-table-row').html(response.updatedRow)
+            $('#cities-table').html(response.updatedCitiesTable)
         },
         error: function(xhr, status, error) {
             console.error(xhr.responseText)

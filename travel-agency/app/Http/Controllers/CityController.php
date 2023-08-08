@@ -17,14 +17,11 @@ class CityController extends Controller
 
     public function store(): JsonResponse
     {
-
         $attributes = request()->validate([
             'name' => ['required', 'max:255','min:2','unique:cities,name']
         ]);
         City::create($attributes);
-        $updatedCitiesTable = $this->updateTable();
-
-        return response()->json(['updatedCitiesTable'=> $updatedCitiesTable]);
+        return response()->json(['updatedCitiesTable'=> $this->updateTable()]);
     }
     /**
      * Display the specified resource.
@@ -42,10 +39,7 @@ class CityController extends Controller
         $city = City::find(request()->id);
         $city->name = $attributes['name'];
         $city->save();
-        $updatedRow = view('components.table-row',[
-            'city' => $city
-        ])->render();
-        return response()->json(['updatedRow'=>$updatedRow]);
+        return response()->json(['updatedCitiesTable'=>$this->updateTable()]);
     }
 
     public function destroy(): jsonResponse
