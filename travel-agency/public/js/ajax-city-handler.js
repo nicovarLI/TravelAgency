@@ -26,7 +26,9 @@ function createCity(){
         processData: false,
         success:function(response)
         {
+            document.forms["add-city-form"].reset();
             $('#cities-table').html(response.updatedCitiesTable)
+            $('#pagination-links').html(response.updatedPaginationLinks);
         },
         error: function(xhr, status, error) {
             console.error(xhr.responseText)
@@ -54,6 +56,7 @@ function deleteCity(){
         success:function(response)
         {
             $('#cities-table').html(response.updatedCitiesTable)
+            $('#pagination-links').html(response.updatedPaginationLinks);
         },
         error: function(xhr, status, error) {
             console.error(xhr.responseText)
@@ -81,6 +84,7 @@ function updateCity(){
         success:function(response)
         {
             $('#cities-table').html(response.updatedCitiesTable)
+            $('#pagination-links').html(response.updatedPaginationLinks);
         },
         error: function(xhr, status, error) {
             console.error(xhr.responseText)
