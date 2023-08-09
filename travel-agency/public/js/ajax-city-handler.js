@@ -7,7 +7,7 @@ $('form').submit(function(event){
     event.preventDefault();
 })
 function createCity(){
-    var currentPage = $('#pagination-links').find('.active').text()
+    var currentPage = new URLSearchParams(window.location.search).get('page') || 1;
     var form = $('#add-city-form');
     var formData = $(form).serializeArray();
     var jsonData = {};
@@ -43,13 +43,9 @@ function createCity(){
 }
 
 function deleteCity(cityId){
-    // var form = event.parent;
-    // var formData = $(form).serializeArray();
-    var jsonData = {'id': cityId};
-
-    // $.each(formData, function(_,field){
-    //     jsonData[field.name] = field.value;
-    // });
+    var currentPage = new URLSearchParams(window.location.search).get('page') || 1;
+    var jsonData = {'id': cityId,
+                    'page': currentPage};
 
     $.ajax({
         url: '/',
@@ -74,6 +70,7 @@ function deleteCity(cityId){
 }
 
 function updateCity(){
+    var currentPage = new URLSearchParams(window.location.search).get('page') || 1;
     var form = $('#cities-update-form');
     var formData = $(form).serializeArray();
     var jsonData = {};
@@ -81,6 +78,7 @@ function updateCity(){
     $.each(formData, function(_,field){
         jsonData[field.name] = field.value;
     });
+    jsonData['page']= currentPage;
 
     $.ajax({
         url: '/',

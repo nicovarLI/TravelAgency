@@ -18,7 +18,6 @@ class CityController extends Controller
 
     public function store(): JsonResponse
     {
-        var_dump(request());
         $attributes = request()->validate([
             'name' => ['required', 'max:255','min:2','unique:cities,name']
         ]);
