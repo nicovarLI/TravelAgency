@@ -5,9 +5,9 @@ $.ajaxSetup({
 });
 $('form').submit(function(event){
     event.preventDefault();
-    console.log("prevented default");
 })
 function createCity(){
+    var currentPage = $('#pagination-links').find('.active').text()
     var form = $('#add-city-form');
     var formData = $(form).serializeArray();
     var jsonData = {};
@@ -15,6 +15,7 @@ function createCity(){
     $.each(formData, function(_,field){
         jsonData[field.name] = field.value;
     });
+    jsonData['page']= currentPage;
 
     $.ajax({
         url: '/',
@@ -27,23 +28,28 @@ function createCity(){
         success:function(response)
         {
             document.forms["add-city-form"].reset();
+            $('#name-error').text('');
             $('#cities-table').html(response.updatedCitiesTable)
             $('#pagination-links').html(response.updatedPaginationLinks);
         },
         error: function(xhr, status, error) {
+            if (xhr.status === 422) {
+                var errors = xhr.responseJSON.errors;
+                $('#name-error').text(errors.name[0]);
+            }
             console.error(xhr.responseText)
         }
     });
 }
 
-function deleteCity(){
-    var form = $('#cities-delete-form');
-    var formData = $(form).serializeArray();
-    var jsonData = {};
+function deleteCity(cityId){
+    // var form = event.parent;
+    // var formData = $(form).serializeArray();
+    var jsonData = {'id': cityId};
 
-    $.each(formData, function(_,field){
-        jsonData[field.name] = field.value;
-    });
+    // $.each(formData, function(_,field){
+    //     jsonData[field.name] = field.value;
+    // });
 
     $.ajax({
         url: '/',
@@ -59,6 +65,9 @@ function deleteCity(){
             $('#pagination-links').html(response.updatedPaginationLinks);
         },
         error: function(xhr, status, error) {
+            if (xhr.status === 422) {
+                var errors = xhr.responseJSON.errors;
+            }
             console.error(xhr.responseText)
         }
     });
@@ -87,6 +96,9 @@ function updateCity(){
             $('#pagination-links').html(response.updatedPaginationLinks);
         },
         error: function(xhr, status, error) {
+            if (xhr.status === 422) {
+                var errors = xhr.responseJSON.errors;
+            }
             console.error(xhr.responseText)
         }
     });

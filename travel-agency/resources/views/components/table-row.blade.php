@@ -7,10 +7,10 @@
             <p class="text-sm text-gray-900">{{$city->name}}</p>
         </td>
         <td class="py-3">
-            {{$city->arrivals}}
+            {{$city->arrivals()->count()}}
         </td>
         <td class="py-3">
-            {{$city->departures}}
+            {{$city->departures()->count()}}
         </td>
         <td>
             <button @click="show = true; cityName = '{{$city->name}}'; cityId = '{{$city->id}}'" class="text-xs bg-blue-400 text-white hover:bg-white action:bg-red-500r hover:text-blue-500 p-2 px-4 rounded-full">
@@ -20,7 +20,7 @@
         <td>
             <form id="cities-delete-form">
                 <input type="hidden" name="id" value="{{$city->id}}"/>
-                <button @click="show = false" onclick="deleteCity()" type="button" class="text-xs bg-red-400 text-white hover:bg-white hover:text-red-500 p-2 px-4 rounded-full">
+                <button @click="show = false" onclick="deleteCity({{$city->id}})" type="button" class="text-xs bg-red-400 text-white hover:bg-white hover:text-red-500 p-2 px-4 rounded-full">
                     Delete
                 </button>
             </form>
