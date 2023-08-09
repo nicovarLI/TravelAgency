@@ -17,9 +17,7 @@ class CityFactory extends Factory
     public function definition(): array
     {
         return [
-            'name' => fake()->city(),
-            'arrivals' => fake()->randomNumber(3),
-            'departures' => fake()->randomNumber(3)
+            'name' => fake()->city()
         ];
     }
 }
