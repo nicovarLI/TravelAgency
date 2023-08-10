@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\DestroyCityRequest;
+use App\Http\Requests\StoreCityRequest;
+use App\Http\Requests\UpdateCityRequest;
 use App\Models\City;
 use App\Models\Flight;
 use Illuminate\Contracts\View\View;
@@ -17,38 +20,27 @@ class CityController extends Controller
         ]);
     }
 
-    public function store(): JsonResponse
+    public function store(StoreCityRequest $request): JsonResponse
     {
-        $attributes = request()->validate([
-            'name' => ['required', 'max:255', 'min:2', 'unique:cities,name']
-        ]);
-        $arr['name'] = $attributes['name'];
-        City::create($arr);
+        $attributes = $request->validated();
+        unset($attributes['page']);
+        City::create($attributes);
         return response()->json(['updatedCitiesTable' => $this->updateTable(), 'updatedPaginationLinks' => $this->updateLinks()]);
     }
-    /**
-     * Display the specified resource.
-     */
-    public function show(City $city)
-    {
-        //
-    }
 
-
-    public function update(): JsonResponse
+    public function update(UpdateCityRequest $request): JsonResponse
     {
-        $attributes = request()->validate([
-            'name' => ['max:40', 'min:2', 'unique:cities,name']
-        ]);
+        $attributes = $request->validated();
         $city = City::find(request()->id);
         $city->name = $attributes['name'];
         $city->save();
         return response()->json(['updatedCitiesTable' => $this->updateTable(), 'updatedPaginationLinks' => $this->updateLinks()]);
     }
 
-    public function destroy(): jsonResponse
+    public function destroy(DestroyCityRequest $request): jsonResponse
     {
-        City::destroy(request()->id);
+        $attributes = $request->validated();
+        City::destroy($attributes['id']);
         return response()->json(['updatedCitiesTable' => $this->updateTable(), 'updatedPaginationLinks' => $this->updateLinks()]);
     }
 
