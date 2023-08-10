@@ -11,7 +11,7 @@ use Illuminate\Contracts\View\View;
 use Illuminate\Http\JsonResponse;
 use PDO;
 
-class CityController extends Controller
+class CityController
 {
     public function index(): View
     {
