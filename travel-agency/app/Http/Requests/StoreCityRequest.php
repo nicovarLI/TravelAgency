@@ -22,7 +22,7 @@ class StoreCityRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => ['required', 'max:255', 'min:2', 'unique:cities,name', 'regex:/^[a-zA-Z\s-]+$/']
+            'name' => ['required', 'min:2', 'max:255', 'unique:cities', 'regex:/^[a-zA-Z\s-]+$/']
         ];
     }
 }
