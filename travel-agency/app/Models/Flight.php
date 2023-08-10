@@ -11,12 +11,16 @@ use Illuminate\Database\Eloquent\Relations\Relation;
 class Flight extends Model
 {
     use HasFactory;
-    protected $guarded = [];
+
+    protected $guarded = [
+        'id'
+    ];
 
     public function originCity(): BelongsTo
     {
         return $this->belongsTo(City::class,'origin_city_id');
     }
+
     public function destinationCity(): BelongsTo
     {
         return $this->belongsTo(City::class,'destination_city_id');
