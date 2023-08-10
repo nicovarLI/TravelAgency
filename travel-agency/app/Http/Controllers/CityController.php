@@ -27,19 +27,18 @@ class CityController
         return response()->json(['updatedCitiesTable' => $this->updateTable(), 'updatedPaginationLinks' => $this->updateLinks()]);
     }
 
-    public function update(UpdateCityRequest $request): JsonResponse
+    public function update(UpdateCityRequest $request, City $city): JsonResponse
     {
         $attributes = $request->validated();
-        $city = City::find(request()->id);
         $city->name = $attributes['name'];
         $city->save();
         return response()->json(['updatedCitiesTable' => $this->updateTable(), 'updatedPaginationLinks' => $this->updateLinks()]);
     }
 
-    public function destroy(DestroyCityRequest $request): jsonResponse
+    public function destroy(City $city): jsonResponse
     {
-        $attributes = $request->validated();
-        City::destroy($attributes['id']);
+        $city->delete();
+
         return response()->json(['updatedCitiesTable' => $this->updateTable(), 'updatedPaginationLinks' => $this->updateLinks()]);
     }
 

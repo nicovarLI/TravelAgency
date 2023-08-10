@@ -41,7 +41,7 @@ function deleteCity(cityId){
                     'page': currentPage};
 
     $.ajax({
-        url: '/',
+        url: `/${jsonData['id']}`,
         method: 'DELETE',
         data: JSON.stringify(jsonData),
         dataType: 'JSON',
@@ -66,7 +66,7 @@ function updateCity(){
     var jsonData = formToJson($('#cities-update-form'),currentPage);
 
     $.ajax({
-        url: '/',
+        url: `/${jsonData['id']}`,
         method: 'PATCH',
         data: JSON.stringify(jsonData),
         dataType: 'JSON',
