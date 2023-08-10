@@ -18,6 +18,7 @@ class City extends Model
     {
         return $this->hasMany(Flight::class, 'origin_city_id');
     }
+    
     public function arrivals(): HasMany
     {
         return $this->hasMany(Flight::class, 'destination_city_id');
