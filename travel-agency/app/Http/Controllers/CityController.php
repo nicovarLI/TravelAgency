@@ -22,9 +22,8 @@ class CityController extends Controller
 
     public function store(StoreCityRequest $request): JsonResponse
     {
-        $attributes = $request->validated();
-        unset($attributes['page']);
-        City::create($attributes);
+        City::create($request->validated());
+
         return response()->json(['updatedCitiesTable' => $this->updateTable(), 'updatedPaginationLinks' => $this->updateLinks()]);
     }
 
