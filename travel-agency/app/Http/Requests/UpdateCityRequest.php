@@ -22,7 +22,6 @@ class UpdateCityRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'id'   => ['required', 'exists:cities,id'],
             'name' => ['max:40', 'min:2','regex:/^[a-zA-Z\s-]+$/', 'unique:cities,name,' . $this->id]
         ];
     }
