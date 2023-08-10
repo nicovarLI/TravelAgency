@@ -68,7 +68,6 @@ function deleteCity(cityId){
         }
     });
 }
-
 function updateCity(){
     var currentPage = new URLSearchParams(window.location.search).get('page') || 1;
     var form = $('#cities-update-form');
