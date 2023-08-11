@@ -20,8 +20,8 @@ class FlightFactory extends Factory
         return [
             'origin_city_id' => City::factory(),
             'destination_city_id' => City::factory(),
-            'departure_time' => fake()->time(),
-            'arrival_time' => fake()->time(),
+            'departure_time' => fake()->dateTime(),
+            'arrival_time' => fake()->dateTime(),
         ];
     }
 }
