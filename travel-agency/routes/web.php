@@ -13,7 +13,10 @@ use Illuminate\Support\Facades\Route;
 | be assigned to the "web" middleware group. Make something great!
 |
 */
-Route::get('/', [CityController::class, 'index'])->name('home');
-Route::post('/', [CityController::class, 'store'])->name('cities.store');
-Route::delete('/{city}', [CityController::class, 'destroy'])->name('cities.destroy');
-Route::patch('/{city}', [CityController::class, 'update'])->name('cities.update');
+
+Route::controller(CityController::class)->group(function () {
+    Route::get('/', 'index')->name('home');
+    Route::post('/', 'store')->name('cities.store');
+    Route::delete('/{city}', 'destroy')->name('cities.destroy');
+    Route::patch('/{city}', 'update')->name('cities.update');
+});
