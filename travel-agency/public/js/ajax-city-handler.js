@@ -3,12 +3,14 @@ $.ajaxSetup({
         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
     }
 });
+
 $('form').submit(function(event){
     event.preventDefault();
 })
-function createCity(){
-    var currentPage = new URLSearchParams(window.location.search).get('page') || 1;
-    var jsonData = formToJson($('#add-city-form'),currentPage);
+
+const createCity = () => {
+    const currentPage = new URLSearchParams(window.location.search).get('page') || 1;
+    const jsonData = formToJson($('#add-city-form'),currentPage);
 
     $.ajax({
         url: '/',
@@ -35,13 +37,12 @@ function createCity(){
     });
 }
 
-function deleteCity(cityId){
-    var currentPage = new URLSearchParams(window.location.search).get('page') || 1;
-    var jsonData = {'id': cityId,
-                    'page': currentPage};
+const deleteCity = (cityId) => {
+    const currentPage = new URLSearchParams(window.location.search).get('page') || 1;
+    const jsonData = {'page': currentPage};
 
     $.ajax({
-        url: `/${jsonData['id']}`,
+        url: `/${cityId}`,
         method: 'DELETE',
         data: JSON.stringify(jsonData),
         dataType: 'JSON',
@@ -55,15 +56,15 @@ function deleteCity(cityId){
         },
         error: function(xhr) {
             if (xhr.status === 422) {
-                var errors = xhr.responseJSON.errors;
+                let errors = xhr.responseJSON.errors;
             }
             console.error(xhr.responseText)
         }
     });
 }
-function updateCity(){
-    var currentPage = new URLSearchParams(window.location.search).get('page') || 1;
-    var jsonData = formToJson($('#cities-update-form'),currentPage);
+const updateCity = () => {
+    const currentPage = new URLSearchParams(window.location.search).get('page') || 1;
+    const jsonData = formToJson($('#cities-update-form'),currentPage);
 
     $.ajax({
         url: `/${jsonData['id']}`,
@@ -80,15 +81,15 @@ function updateCity(){
         },
         error: function(xhr) {
             if (xhr.status === 422) {
-                var errors = xhr.responseJSON.errors;
+                let errors = xhr.responseJSON.errors;
             }
             console.error(xhr.responseText)
         }
     });
 }
 function formToJson(form,page){
-    var formData = $(form).serializeArray();
-    var jsonData = {};
+    let formData = $(form).serializeArray();
+    let jsonData = {};
 
     $.each(formData, function(_,field){
         jsonData[field.name] = field.value;
