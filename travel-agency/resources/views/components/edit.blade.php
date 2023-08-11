@@ -14,7 +14,7 @@
         <button @click="show = ! show" type="button" class="flex mr-2 text-md justify-center rounded-full py-2 px-4 bg-red-400 text-white hover:bg-white action:bg-red-500r hover:text-red-500">
             ←
         </button>
-        <button @click="show = ! show" onclick="updateCity()" type="button" class="flex justify-center rounded-full py-2 px-4 bg-blue-400 text-sm text-white hover:bg-white action:bg-red-500r hover:text-blue-500">
+        <button @click="show = ! show; updateCity(cityId)" type="button" class="flex justify-center rounded-full py-2 px-4 bg-blue-400 text-sm text-white hover:bg-white action:bg-red-500r hover:text-blue-500">
             Submit
         </button>
     </div>

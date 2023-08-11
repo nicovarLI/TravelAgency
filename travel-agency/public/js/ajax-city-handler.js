@@ -1,6 +1,6 @@
 $.ajaxSetup({
     headers: {
-        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
     }
 });
 
@@ -9,17 +9,12 @@ $('form').submit(function(event){
 })
 
 const createCity = () => {
-    const currentPage = new URLSearchParams(window.location.search).get('page') || 1;
-    const jsonData = formToJson($('#add-city-form'),currentPage);
-
+    const page = currentPage();
     $.ajax({
-        url: '/',
+        url: `/?page=${page}`,
         method: 'POST',
-        data: JSON.stringify(jsonData),
-        dataType: 'JSON',
-        contentType: 'application/json',
+        data: $('#add-city-form').serialize(),
         cache: false,
-        processData: false,
         success:function(response)
         {
             document.forms["add-city-form"].reset();
@@ -35,17 +30,11 @@ const createCity = () => {
 }
 
 const deleteCity = (cityId) => {
-    const currentPage = new URLSearchParams(window.location.search).get('page') || 1;
-    const jsonData = {'page': currentPage};
-
+    const page = currentPage();
     $.ajax({
-        url: `/${cityId}`,
+        url: `/${cityId}?page=${page}`,
         method: 'DELETE',
-        data: JSON.stringify(jsonData),
-        dataType: 'JSON',
-        contentType: 'application/json',
         cache: false,
-        processData: false,
         success:function(response)
         {
             $('#cities-table').html(response.updatedCitiesTable)
@@ -57,18 +46,14 @@ const deleteCity = (cityId) => {
         }
     });
 }
-const updateCity = () => {
-    const currentPage = new URLSearchParams(window.location.search).get('page') || 1;
-    const jsonData = formToJson($('#cities-update-form'),currentPage);
 
+const updateCity = (cityId) => {
+    const page =  currentPage();
     $.ajax({
-        url: `/${jsonData['id']}`,
+        url: `/${cityId}?page=${page}`,
         method: 'PATCH',
-        data: JSON.stringify(jsonData),
-        dataType: 'JSON',
-        contentType: 'application/json',
+        data: $('#cities-update-form').serialize(),
         cache: false,
-        processData: false,
         success:function(response)
         {
             $('#cities-table').html(response.updatedCitiesTable)
@@ -80,13 +65,5 @@ const updateCity = () => {
         }
     });
 }
-function formToJson(form,page){
-    let formData = $(form).serializeArray();
-    let jsonData = {};
 
-    $.each(formData, function(_,field){
-        jsonData[field.name] = field.value;
-    });
-    jsonData['page']= page;
-    return jsonData;
-}
+const currentPage = () => new URLSearchParams(window.location.search).get('page') || 1;

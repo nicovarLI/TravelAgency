@@ -2,14 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\DestroyCityRequest;
 use App\Http\Requests\StoreCityRequest;
 use App\Http\Requests\UpdateCityRequest;
 use App\Models\City;
-use App\Models\Flight;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\JsonResponse;
-use PDO;
 
 class CityController
 {
@@ -44,8 +41,7 @@ class CityController
 
     private function updateTable(): string
     {
-        $page = request()->input('page', 1);
-        $cities = City::with(['arrivals', 'departures'])->paginate(10, ['*'], 'page', $page);
+        $cities = City::with(['arrivals', 'departures'])->paginate(10);
         return view('components.table', compact('cities'))->render();
     }
     private function updateLinks(): string
