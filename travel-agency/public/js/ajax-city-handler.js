@@ -28,10 +28,7 @@ const createCity = () => {
             $('#pagination-links').html(response.updatedPaginationLinks);
         },
         error: function(xhr) {
-            if (xhr.status === 422) {
-                var errors = xhr.responseJSON.errors;
-                $('#name-error').text(errors.name[0]);
-            }
+            let errors = xhr.responseJSON.errors;
             console.error(xhr.responseText)
         }
     });
@@ -55,9 +52,7 @@ const deleteCity = (cityId) => {
             $('#pagination-links').html(response.updatedPaginationLinks);
         },
         error: function(xhr) {
-            if (xhr.status === 422) {
-                let errors = xhr.responseJSON.errors;
-            }
+            let errors = xhr.responseJSON.errors;
             console.error(xhr.responseText)
         }
     });
@@ -80,9 +75,7 @@ const updateCity = () => {
             $('#pagination-links').html(response.updatedPaginationLinks);
         },
         error: function(xhr) {
-            if (xhr.status === 422) {
-                let errors = xhr.responseJSON.errors;
-            }
+            let errors = xhr.responseJSON.errors;
             console.error(xhr.responseText)
         }
     });
