@@ -3,7 +3,7 @@
 <table class="w-full flex-1 text-center" id="cities-table">
     <thead>
         <tr>
-            <th class="py-2">Id</th>
+            <th class="py-2">ID</th>
             <th class="py-2">City</th>
             <th class="py-2">Arrivals</th>
             <th class="py-2">Departures</th>
