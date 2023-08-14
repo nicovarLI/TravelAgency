@@ -12,7 +12,7 @@
         </tr>
     </thead>
 
-    <tbody class="divide-y divide-gray-200">
+    <tbody class="divide-y divide-gray-200 " id="table-body">
         @if (!count($cities) > 0)
             <tr>
                 <td class="py-2">

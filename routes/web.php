@@ -16,7 +16,4 @@ use Illuminate\Support\Facades\Route;
 
 Route::controller(CityController::class)->group(function () {
     Route::get('/', 'index')->name('home');
-    Route::post('/', 'store')->name('cities.store');
-    Route::delete('/{city}', 'destroy')->name('cities.destroy');
-    Route::patch('/{city}', 'update')->name('cities.update');
 });
