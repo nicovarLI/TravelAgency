@@ -29,8 +29,7 @@ class CityController
         return response()->json([
             'message' => 'City stored.',
             'status' => 'success',
-            'code' => '201'
-        ]);
+        ],201);
     }
 
     public function update(UpdateCityRequest $request, City $city): JsonResponse
@@ -41,8 +40,7 @@ class CityController
         return response()->json([
             'message' => 'City updated.',
             'status' => 'success',
-            'code' => '200'
-        ]);
+        ],200);
     }
 
     public function destroy(City $city): jsonResponse
@@ -52,7 +50,6 @@ class CityController
         return response()->json([
             'message' => 'City deleted.',
             'status' => 'success',
-            'code' => '204'
-        ]);
+        ],204);
     }
 }
