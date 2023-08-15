@@ -40,7 +40,7 @@ class CityController
         return response()->json([
             'message' => 'City updated.',
             'status' => 'success',
-        ],200);
+        ]);
     }
 
     public function destroy(City $city): jsonResponse
