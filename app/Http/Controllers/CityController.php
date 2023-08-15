@@ -41,7 +41,7 @@ class CityController
         ]);
     }
 
-    public function destroy(City $city): jsonResponse
+    public function destroy(City $city): JsonResponse
     {
         $city->delete();
 
