@@ -87,7 +87,7 @@ const renderTable = (cities) => {
         tableBody += `
             <tr class="hover:bg-gray-300" data-id="${id}">
                 <td class="py-3">
-                    <p class="text-sm font-semibold text-gray-900">${city.id}</p>
+                    <p class="text-sm font-semibold text-gray-900">${id}</p>
                 </td>
                 <td class="py-3 flex justify-center">
                     <p class="text-sm text-gray-900">${name}</p>
@@ -116,8 +116,8 @@ const renderTable = (cities) => {
     return tableBody;
 }
 
-const renderLinks = (linkData) => {
-    newLinks = customizePaginationLinks(linkData.links);
+const renderLinks = ({ links, from, to, total }) => {
+    newLinks = customizePaginationLinks(links);
     linksNav = `
     <nav role="navigation" aria-label="Pagination Navigation" class="flex items-center justify-between">
 
@@ -125,11 +125,11 @@ const renderLinks = (linkData) => {
         <div>
             <p class="text-sm text-gray-700 leading-5">
                 Showing
-                <span class="font-medium">${linkData.from}</span>
+                <span class="font-medium">${from}</span>
                 to
-                <span class="font-medium">${linkData.to}</span>
+                <span class="font-medium">${to}</span>
                 of
-                <span class="font-medium">${linkData.total}</span>
+                <span class="font-medium">${total}</span>
                 results
             </p>
         </div>
