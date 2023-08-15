@@ -50,6 +50,6 @@ class CityController
         return response()->json([
             'message' => 'City deleted.',
             'status' => 'success',
-        ],204);
+        ]);
     }
 }
