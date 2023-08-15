@@ -13,7 +13,7 @@
     </thead>
 
     <tbody class="divide-y divide-gray-200 " id="table-body">
-        @if (!count($cities) > 0)
+        @if (!empty($cities))
             <tr>
                 <td class="py-2">
                     <p class="text-gray-400 text-sm">Id</p>
