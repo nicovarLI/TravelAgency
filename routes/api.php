@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\CityApiController;
 use App\Http\Controllers\CityController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -14,11 +15,13 @@ use Illuminate\Support\Facades\Route;
 | be assigned to the "api" middleware group. Make something great!
 |
 */
-Route::prefix('cities')->name('cities.')->group(function () {
-    Route::controller(CityController::class)->group(function () {
-        Route::get('/', 'getCities')->name('getCities');
+
+Route::controller(CityApiController::class)
+    ->prefix('cities')
+    ->name('cities.')
+    ->group(function () {
+        Route::get('/', 'index')->name('index');
         Route::put('/{city}', 'update')->name('update');
         Route::post('/', 'store')->name('store');
         Route::delete('/{city}', 'destroy')->name('destroy');
     });
-});

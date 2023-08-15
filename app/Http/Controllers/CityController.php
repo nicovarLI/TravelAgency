@@ -2,52 +2,15 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\StoreCityRequest;
-use App\Http\Requests\UpdateCityRequest;
 use App\Models\City;
-use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Contracts\View\View;
-use Illuminate\Http\JsonResponse;
 
 class CityController
 {
     public function index(): View
     {
         return view('cities', [
-            'cities' => $this->getCities()
-        ]);
-    }
-    public function getCities(): LengthAwarePaginator
-    {
-        return City::with(['arrivals', 'departures'])->paginate(10);
-    }
-
-    public function store(StoreCityRequest $request): JsonResponse
-    {
-        City::create($request->validated());
-
-        return response()->json([
-            'message' => 'City stored.',
-            'status' => 'success',
-        ], JsonResponse::HTTP_CREATED);
-    }
-
-    public function update(UpdateCityRequest $request, City $city): JsonResponse
-    {
-        $city->update($request->validated());
-        return response()->json([
-            'message' => 'City updated.',
-            'status' => 'success',
-        ]);
-    }
-
-    public function destroy(City $city): JsonResponse
-    {
-        $city->delete();
-
-        return response()->json([
-            'message' => 'City deleted.',
-            'status' => 'success',
+            'cities' => City::paginate(10)
         ]);
     }
 }
