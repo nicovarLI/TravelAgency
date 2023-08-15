@@ -1,8 +1,6 @@
 <?php
 
-use App\Http\Controllers\Api\CityApiController;
-use App\Http\Controllers\CityController;
-use Illuminate\Http\Request;
+use App\Http\Controllers\Api\CityController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -16,7 +14,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::controller(CityApiController::class)
+Route::controller(CityController::class)
     ->prefix('cities')
     ->name('cities.')
     ->group(function () {

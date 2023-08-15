@@ -14,4 +14,4 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/',[CityController::class, 'index']);
+Route::get('/', [CityController::class, 'index'])->name('cities.index');

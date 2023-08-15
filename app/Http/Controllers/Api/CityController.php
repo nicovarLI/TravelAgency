@@ -8,7 +8,7 @@ use App\Models\City;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Http\JsonResponse;
 
-class CityApiController
+class CityController
 {
     public function index(): LengthAwarePaginator
     {
