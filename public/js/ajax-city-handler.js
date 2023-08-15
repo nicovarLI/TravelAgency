@@ -83,6 +83,7 @@ const loadTable = () => {
 
 const renderTable = (cities) => {
     let tableBody = '';
+
     cities.forEach(({ id, name, arrivals, departures })=> {
         tableBody += `
             <tr class="hover:bg-gray-300" data-id="${id}">
@@ -113,11 +114,13 @@ const renderTable = (cities) => {
                 </td>
             </tr>`;
     });
+
     return tableBody;
 }
 
 const renderLinks = ({ links, from, to, total }) => {
     newLinks = customizePaginationLinks(links);
+
     linksNav = `
     <nav role="navigation" aria-label="Pagination Navigation" class="flex items-center justify-between">
 
@@ -142,6 +145,7 @@ const renderLinks = ({ links, from, to, total }) => {
                         <path fill-rule="evenodd" d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clip-rule="evenodd" />
                     </svg>
                 </a>`;
+
     newLinks.pop();
     newLinks.slice(1).forEach(link => {
         linksNav += `
@@ -154,12 +158,14 @@ const renderLinks = ({ links, from, to, total }) => {
         </svg>
         </a>
     `;
+
     return linksNav;
 }
 
 const currentPage = () => new URLSearchParams(window.location.search).get('page') || 1;
 
 const customizePaginationLinks = (links) => {
+
     return links.map(link => {
         if (link.url) {
             link.url = link.url.replace('/api/cities', '');
