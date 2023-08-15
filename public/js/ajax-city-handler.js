@@ -82,7 +82,7 @@ const loadTable = () => {
 }
 
 const renderTable = (cities) => {
-    tableBody = '';
+    let tableBody = '';
     cities.forEach(city => {
         tableBody += `
             <tr class="hover:bg-gray-300" data-id="${city.id}">
