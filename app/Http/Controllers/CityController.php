@@ -10,7 +10,7 @@ class CityController
     public function index(): View
     {
         return view('cities', [
-            'cities' => City::paginate(10)
+            'cities' => City::withCount(['arrivals', 'departures'])->paginate(10)
         ]);
     }
 }

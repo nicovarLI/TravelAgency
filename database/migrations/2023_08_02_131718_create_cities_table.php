@@ -14,8 +14,6 @@ return new class extends Migration
         Schema::create('cities', function (Blueprint $table) {
             $table->id();
             $table->string('name')->unique();
-            $table->integer('arrivals')->default(0);
-            $table->integer('departures')->default(0);
             $table->timestamps();
         });
     }

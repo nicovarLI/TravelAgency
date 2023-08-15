@@ -12,7 +12,7 @@ class CityApiController
 {
     public function index(): LengthAwarePaginator
     {
-        return City::with(['arrivals', 'departures'])->paginate(10);
+        return City::withCount(['arrivals', 'departures'])->paginate(10);
     }
 
     public function store(StoreCityRequest $request): JsonResponse
@@ -28,6 +28,7 @@ class CityApiController
     public function update(UpdateCityRequest $request, City $city): JsonResponse
     {
         $city->update($request->validated());
+
         return response()->json([
             'message' => 'City updated.',
             'status' => 'success',
