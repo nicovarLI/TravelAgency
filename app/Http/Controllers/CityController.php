@@ -29,7 +29,7 @@ class CityController
         return response()->json([
             'message' => 'City stored.',
             'status' => 'success',
-        ],201);
+        ], JsonResponse::HTTP_CREATED);
     }
 
     public function update(UpdateCityRequest $request, City $city): JsonResponse
