@@ -34,9 +34,7 @@ class CityController
 
     public function update(UpdateCityRequest $request, City $city): JsonResponse
     {
-        $attributes = $request->validated();
-        $city->name = $attributes['name'];
-        $city->save();
+        $city->update($request->validated());
         return response()->json([
             'message' => 'City updated.',
             'status' => 'success',
