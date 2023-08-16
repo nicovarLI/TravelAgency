@@ -15,7 +15,6 @@ const createAirline = () => {
     })
     .then(response => response.json())
     .then(result => {
-        console.log(result.message); // Success message
         loadTable();
         //form.text('');
     })
@@ -29,10 +28,9 @@ const loadTable = () => {
         .then(response => response.json())
         .then(result => {
             const airlines = result.data;
-            const links = result.links;
 
             $('#table-body').html(renderTable(airlines))
-            $('#pagination-links').html(getLinks(links, '/api/airlines'));
+            $('#pagination-links').html(getLinks(result, '/api/airlines'));
         })
          .catch(error => {
             console.error('Load table error: ', error);
