@@ -3,42 +3,74 @@ $('form').submit(function(event){
 })
 
 const createAirline = () => {
-    const form = $('#add-airline-form');
-    const formData = new URLSearchParams(form.serialize());
     fetch('api/airlines', {
         method: 'POST',
         headers: {
             'Content-type': 'application/x-www-form-urlencoded',
             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
         },
-        body: formData
+        body: new URLSearchParams($('#add-airline-form').serialize())
     })
+
     .then(response => response.json())
     .then(result => {
         loadTable();
-        //form.text('');
+        document.forms["add-airline-form"].reset();
+        $('#name-error').text('');
     })
-    .catch(error => console.error(error));
+    .catch(error =>
+        console.error(response.message));
+}
+
+const deleteAirline = (airlineId) => {
+    fetch(`api/airlines/${airlineId}`, {
+        method: 'DELETE',
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        },
+    })
+
+    .then(response => response.json())
+    .then(result=>
+        loadTable())
+    .catch(error =>
+        console.error(error));
+}
+
+const updateAirline = (airlineId) => {
+    fetch(`api/airlines/${airlineId}`, {
+        method: 'PUT',
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        },
+        body: new URLSearchParams($('#airlines-update-form').serialize())
+    })
+
+    .then(response => response.json())
+    .then(result=>
+        loadTable())
+    .catch(error =>
+        console.error(error));
 }
 
 const loadTable = () => {
     const page = currentPage();
-
     fetch(`/api/airlines?page=${page}`)
-        .then(response => response.json())
-        .then(result => {
-            const airlines = result.data;
 
-            $('#table-body').html(renderTable(airlines))
-            $('#pagination-links').html(getLinks(result, '/api/airlines'));
-        })
-         .catch(error => {
-            console.error('Load table error: ', error);
+    .then(response => response.json())
+    .then(result => {
+        const airlines = result.data;
+        $('#table-body').html(renderTable(airlines))
+        $('#pagination-links').html(getLinks(result, '/api/airlines'));
+    })
+     .catch(error => {
+        console.error('Load table error: ', error);
     })
 }
 
 const renderTable = (airlines) => {
     let tableBody = '';
+
     airlines.forEach(({ id, name, description, flights_count })=> {
         tableBody += `
             <tr class="hover:bg-gray-300" data-id="${id}">

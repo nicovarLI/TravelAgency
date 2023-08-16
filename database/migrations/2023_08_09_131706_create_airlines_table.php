@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('airlines', function (Blueprint $table) {
             $table->id();
             $table->string('name')->unique();
-            $table->string('description')->nullable();
+            $table->string('description')->nullable()->default('');
             $table->timestamps();
         });
     }

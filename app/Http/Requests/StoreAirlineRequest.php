@@ -9,9 +9,14 @@ class StoreAirlineRequest extends FormRequest
 
     public function rules(): array
     {
+        /**
+        * Get the validation rules that apply to the request.
+        *
+        * @return array<string, mixed>
+        */
         return [
             'name' => ['required', 'min:2', 'max:40', 'unique:airlines', 'regex:/^[a-zA-Z\s-]+$/'],
-            'description' => ['max:100']
+            'description' => ['max:40', 'regex:/^[a-zA-Z\s-]+$/']
         ];
     }
 }

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Requests\StoreAirlineRequest;
+use App\Http\Requests\UpdateAirlineRequest;
 use App\Models\Airline;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Http\JsonResponse;
@@ -14,9 +15,7 @@ class AirlineController
     {
         return Airline::withCount(['flights'])->paginate(10);
     }
-    /**
-     * Store a newly created resource in storage.
-     */
+
     public function store(StoreAirlineRequest $request): JsonResponse
     {
         Airline::create($request->validated());
@@ -27,35 +26,23 @@ class AirlineController
         ], JsonResponse::HTTP_CREATED);
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(Airline $airline)
+    public function update(UpdateAirlineRequest $request, Airline $airline): JsonResponse
     {
-        //
+        $airline->update($request->validated());
+
+        return response()->json([
+            'message' => 'airline deleted.',
+            'status' => 'success',
+        ]);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Airline $airline)
+    public function destroy(Airline $airline): JsonResponse
     {
-        //
-    }
+        $airline->delete();
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, Airline $airline)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Airline $airline)
-    {
-        //
+        return response()->json([
+            'message' => 'airline deleted.',
+            'status' => 'success',
+        ]);
     }
 }
