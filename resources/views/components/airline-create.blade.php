@@ -13,7 +13,7 @@
 
                     Description
                 </label>
-                <input class="border border-gray-400 rounded-xl p-2 w-full" type="text" name="description" id="description" required>
+                <input class="border border-gray-400 rounded-xl p-2 w-full" type="text" name="description" id="description">
 
                 <span id="name-error" class="text-red-500 text-xs mt-1"></span>
                 @error('name')
@@ -21,7 +21,7 @@
                 @enderror
             </div>
             <div class="mb-6 flex justify-center">
-                <button onclick="createCity()" type="submit" class="bg-blue-400 text-white hover:bg-white action:bg-red-500r hover:text-blue-500 rounded-full py-2 px-4">
+                <button onclick="createAirline()" type="submit" class="bg-blue-400 text-white hover:bg-white action:bg-red-500r hover:text-blue-500 rounded-full py-2 px-4">
                     Submit
                 </button>
             </div>

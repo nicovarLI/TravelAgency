@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\AirlineController;
 use App\Http\Controllers\Api\CityController;
 use Illuminate\Support\Facades\Route;
 
@@ -22,4 +23,14 @@ Route::controller(CityController::class)
         Route::put('/{city}', 'update')->name('update');
         Route::post('/', 'store')->name('store');
         Route::delete('/{city}', 'destroy')->name('destroy');
+    });
+
+Route::controller(AirlineController::class)
+    ->prefix('airlines')
+    ->name('airlines.')
+    ->group(function () {
+        Route::get('/', 'index')->name('index');
+        Route::put('/{airline}', 'update')->name('update');
+        Route::post('/', 'store')->name('store');
+        Route::delete('/{airline}', 'destroy')->name('destroy');
     });

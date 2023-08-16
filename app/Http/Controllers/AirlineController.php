@@ -13,55 +13,12 @@ class AirlineController
     public function index()
     {
         return view('airlines',[
-            'airlines' => Airline::paginate(10)
+            'airlines' => Airline::withCount(['flights'])->paginate(10)
         ]);
     }
 
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
-    {
-        //
-    }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(Airline $airline)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Airline $airline)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, Airline $airline)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Airline $airline)
-    {
-        //
-    }
 }
