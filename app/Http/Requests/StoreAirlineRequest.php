@@ -15,8 +15,8 @@ class StoreAirlineRequest extends FormRequest
         * @return array<string, mixed>
         */
         return [
-            'name' => ['required', 'min:2', 'max:40', 'unique:airlines', 'regex:/^[a-zA-Z\s-]+$/'],
-            'description' => ['max:40', 'regex:/^[a-zA-Z\s-]+$/']
+            'name' => ['required', 'min:2', 'max:40', 'unique:airlines', 'alpha_num:ascii'],
+            'description' => ['max:100', 'alpha_num:ascii']
         ];
     }
 }

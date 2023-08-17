@@ -31,7 +31,7 @@ class AirlineController
         $airline->update($request->validated());
 
         return response()->json([
-            'message' => 'airline deleted.',
+            'message' => 'airline updated.',
             'status' => 'success',
         ]);
     }

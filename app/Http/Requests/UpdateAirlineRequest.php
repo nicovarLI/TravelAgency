@@ -14,8 +14,8 @@ class UpdateAirlineRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => ['max:40', 'min:2','regex:/^[a-zA-Z\s-]+$/', 'unique:airlines,name,' . $this->id],
-            'description' => ['max:40','regex:/^[a-zA-Z\s-]+$/']
+            'name' => ['max:40', 'min:2','alpha_num:ascii', 'unique:airlines,name,' . $this->id],
+            'description' => ['max:100','alpha_num:ascii']
         ];
     }
 }
