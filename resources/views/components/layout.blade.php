@@ -23,6 +23,7 @@
             </div>
         </nav>
         <div id="main-content">
+            <script src="{{ asset('js/utils.js')}}"></script>
             {{ $slot }}
         </div>
 
