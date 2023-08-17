@@ -3,14 +3,14 @@
     <h3 class="text-center text-xl mb-4 text-gray-600">Edit airline</h3>
     <div class="flex flex-col">
         <span class="text-md pl-3 text-gray-500">Name</span>
-        <x-form-input name="name" id="name" x-model="airlineName" x-text="airlineName" required />
+        <x-form.input name="name" id="name" x-model="airlineName" x-text="airlineName" required />
 
         <span class="text-md pl-3 text-gray-500">Description</span>
-        <x-form-input name="description" id="description" x-model="airlineDescription" x-text="airlineDescription" />
+        <x-form.input name="description" id="description" x-model="airlineDescription" x-text="airlineDescription" />
 
         @error('name')
             <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
         @enderror
     </div>
-        <x-form-buttons :back-attributes="['@click' => 'show = !show']" :submit-attributes="['@click' => 'show = !show; updateAirline(airlineId)']"/>
+        <x-form.buttons :back-attributes="['@click' => 'show = !show']" :submit-attributes="['@click' => 'show = !show; updateAirline(airlineId)']"/>
 </form>
