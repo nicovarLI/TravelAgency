@@ -6,7 +6,6 @@ use Illuminate\Foundation\Http\FormRequest;
 
 class StoreAirlineRequest extends FormRequest
 {
-
     public function rules(): array
     {
         /**

@@ -11,7 +11,7 @@ use Illuminate\Http\Request;
 
 class AirlineController
 {
-    public function index():LengthAwarePaginator
+    public function index(): LengthAwarePaginator
     {
         return Airline::withCount(['flights'])->paginate(10);
     }
@@ -31,7 +31,7 @@ class AirlineController
         $airline->update($request->validated());
 
         return response()->json([
-            'message' => 'airline updated.',
+            'message' => 'Airline updated.',
             'status' => 'success',
         ]);
     }
@@ -41,7 +41,7 @@ class AirlineController
         $airline->delete();
 
         return response()->json([
-            'message' => 'airline deleted.',
+            'message' => 'Airline deleted.',
             'status' => 'success',
         ]);
     }

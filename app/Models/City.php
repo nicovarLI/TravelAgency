@@ -24,7 +24,7 @@ class City extends Model
         return $this->hasMany(Flight::class, 'destination_city_id');
     }
 
-    public function airlines()
+    public function airlines(): HasMany
     {
         return $this->hasMany(Airline::class);
     }

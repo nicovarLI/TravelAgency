@@ -13,12 +13,12 @@ class Airline extends Model
         'id',
     ];
 
-    public function flights()
+    public function flights(): HasMany
     {
         return $this->hasMany(Flight::class);
     }
 
-    public function cities()
+    public function cities(): HasMany
     {
         return $this->belongsToMany(City::class);
     }
