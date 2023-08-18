@@ -16,6 +16,8 @@
                 <input class="border border-gray-400 rounded-xl p-2 w-full" type="text" name="description" id="description">
 
                 <span id="name-error" class="text-red-500 text-xs mt-1"></span>
+                <span id="description-error" class="text-red-500 text-xs mt-1"></span>
+
                 @error('name')
                     <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
                 @enderror

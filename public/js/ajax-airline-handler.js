@@ -7,16 +7,27 @@ const createAirline = () => {
         method: 'POST',
         headers: {
             'Content-type': 'application/x-www-form-urlencoded',
+            'X-Requested-With': 'XMLHttpRequest',
             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
         },
         body: new URLSearchParams($('#add-airline-form').serialize())
     })
 
-    .then(response => response.json())
+    .then(response => {
+        if (response.ok) {
+            $('#name-error').text('');
+            $('#description-error').text('');
+            document.forms["add-airline-form"].reset();
+            return response.json();
+
+        } else {
+            return response.json().then(data => {
+                handleValidationErrors(data.errors);
+            });
+        }
+    })
     .then(result => {
         loadTable();
-        document.forms["add-airline-form"].reset();
-        $('#name-error').text('');
     })
     .catch(error =>
         console.error(response.message));
@@ -26,6 +37,7 @@ const deleteAirline = (airlineId) => {
     fetch(`api/airlines/${airlineId}`, {
         method: 'DELETE',
         headers: {
+            'X-Requested-With': 'XMLHttpRequest',
             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
         },
     })
@@ -34,7 +46,7 @@ const deleteAirline = (airlineId) => {
     .then(result=>
         loadTable())
     .catch(error =>
-        console.error(error));
+        console.error(error))
 }
 
 const updateAirline = (airlineId) => {
@@ -42,6 +54,7 @@ const updateAirline = (airlineId) => {
         method: 'PUT',
         headers: {
             'Content-type': 'application/x-www-form-urlencoded',
+            'X-Requested-With': 'XMLHttpRequest',
             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
         },
         body: new URLSearchParams($('#airlines-update-form').serialize())

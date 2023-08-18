@@ -8,5 +8,5 @@
             <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
         @enderror
     </div>
-    <x-form.buttons :back-attributes="['@click' => 'show = !show']" :submit-attributes="['@click' => 'show = !show; updateCity(cityId)']"/>
+    <x-form.buttons :back-attributes="['@click' => 'show = !show']" :submit-attributes="['@click' => 'updateCity(cityId)']"/>
 </form>

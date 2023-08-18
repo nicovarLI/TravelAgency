@@ -51,3 +51,11 @@ const customizePaginationLinks = (links,wrongPath ) => {
         return link;
     });
 }
+
+const handleValidationErrors = (errors) => {
+
+    for (const field in errors) {
+        const errorMessage = errors[field].join(', ');
+        $(`#${field}-error`).text(errorMessage);
+    }
+}

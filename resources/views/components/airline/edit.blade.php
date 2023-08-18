@@ -12,5 +12,5 @@
             <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
         @enderror
     </div>
-        <x-form.buttons :back-attributes="['@click' => 'show = !show']" :submit-attributes="['@click' => 'show = !show; updateAirline(airlineId)']"/>
+        <x-form.buttons :back-attributes="['@click' => 'show = !show']" :submit-attributes="['@click' => 'updateAirline(airlineId)']"/>
 </form>
