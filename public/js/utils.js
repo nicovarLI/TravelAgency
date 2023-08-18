@@ -1,5 +1,5 @@
 const getLinks = ({ links, from, to, total }, url) => {
-    newLinks = customizePaginationLinks(links, url);
+    const newLinks = customizePaginationLinks(links, url);
 
     linksNav = `
     <nav role="navigation" aria-label="Pagination Navigation" class="flex items-center justify-between">
@@ -48,6 +48,7 @@ const customizePaginationLinks = (links,wrongPath ) => {
         if (link.url) {
             link.url = link.url.replace(wrongPath, '');
         }
+
         return link;
     });
 }

@@ -82,36 +82,64 @@ const loadTable = () => {
 
 const renderTable = (cities) => {
     let tableBody = '';
-    cities.forEach(({ id, name, arrivals_count, departures_count })=> {
-        tableBody += `
-            <tr class="hover:bg-gray-300" data-id="${id}">
-                <td class="py-3">
-                    <p class="text-sm font-semibold text-gray-900">${id}</p>
-                </td>
-                <td class="py-3 flex justify-center">
-                    <p class="text-sm text-gray-900">${name}</p>
-                </td>
-                <td class="py-3">
-                    ${arrivals_count}
-                </td>
-                <td class="py-3">
-                    ${departures_count}
-                </td>
-                <td>
-                    <button @click="show = true; cityName = '${name}'; cityId = '${id}'" class="text-xs bg-blue-400 text-white hover:bg-white action:bg-red-500r hover:text-blue-500 p-2 px-4 rounded-full">
-                        Edit
-                    </button>
-                </td>
-                <td>
-                    <form id="cities-delete-form">
-                        <input type="hidden" name="id" value="${id}"/>
-                        <button @click="show = false" onclick="deleteCity(${id})" type="button" class="text-xs bg-red-400 text-white hover:bg-white hover:text-red-500 p-2 px-4 rounded-full">
-                            Delete
+    if(cities.length > 0){
+        cities.forEach(({ id, name, arrivals_count, departures_count })=> {
+            tableBody += `
+                <tr class="hover:bg-gray-300" data-id="${id}">
+                    <td class="py-3">
+                        <p class="text-sm font-semibold text-gray-900">${id}</p>
+                    </td>
+                    <td class="py-3 flex justify-center">
+                        <p class="text-sm text-gray-900">${name}</p>
+                    </td>
+                    <td class="py-3">
+                        ${arrivals_count}
+                    </td>
+                    <td class="py-3">
+                        ${departures_count}
+                    </td>
+                    <td>
+                        <button @click="show = true; cityName = '${name}'; cityId = '${id}'" class="text-xs bg-blue-400 text-white hover:bg-white action:bg-red-500r hover:text-blue-500 p-2 px-4 rounded-full">
+                            Edit
                         </button>
-                    </form>
-                </td>
-            </tr>`;
-    });
+                    </td>
+                    <td>
+                        <form id="cities-delete-form">
+                            <input type="hidden" name="id" value="${id}"/>
+                            <button @click="show = false" onclick="deleteCity(${id})" type="button" class="text-xs bg-red-400 text-white hover:bg-white hover:text-red-500 p-2 px-4 rounded-full">
+                                Delete
+                            </button>
+                        </form>
+                    </td>
+                </tr>`;
+        });
+    } else {
+        tableBody += `
+        <tr>
+            <td class="py-2">
+                <p class="text-gray-400 text-sm">Id</p>
+            </td>
+            <td class="py-2">
+                <p class="text-gray-400 text-sm">City</p>
+            </td>
+            <td class="py-2">
+                <p class="text-gray-400 text-sm">Arrivals</p>
+            </td>
+            <td class="py-2">
+                <p class="text-gray-400 text-sm">Departures</p>
+            </td>
+            <td>
+                <button class="text-xs bg-gray-200 text-gray-400 p-2 px-4 rounded-full">
+                    Edit
+                </button>
+            </td>
+            <td>
+                <button class="text-xs bg-gray-200 text-gray-400 p-2 px-4 rounded-full">
+                    Delete
+                </button>
+            </td>
+        </tr>`;
+    }
 
     return tableBody;
 }

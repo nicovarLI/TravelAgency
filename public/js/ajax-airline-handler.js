@@ -18,6 +18,7 @@ const createAirline = () => {
             $('#name-error').text('');
             $('#description-error').text('');
             document.forms["add-airline-form"].reset();
+
             return response.json();
 
         } else {
@@ -84,36 +85,63 @@ const loadTable = () => {
 
 const renderTable = (airlines) => {
     let tableBody = '';
-
-    airlines.forEach(({ id, name, description, flights_count })=> {
+    if(airlines.length > 0){
+        airlines.forEach(({ id, name, description, flights_count })=> {
+            tableBody += `
+                <tr class="hover:bg-gray-300" data-id="${id}">
+                    <td class="py-3">
+                        <p class="text-sm font-semibold text-gray-900">${id}</p>
+                    </td>
+                    <td class="py-3 flex justify-center">
+                        <p class="text-sm text-gray-900">${name}</p>
+                    </td>
+                    <td class="py-3">
+                        ${description}
+                    </td>
+                    <td class="py-3">
+                        ${flights_count}
+                    </td>
+                    <td>
+                        <button @click="show = true; airlineName = '${name}'; airlineId = '${id}'; airlineDescription = '${description}';" class="text-xs bg-blue-400 text-white hover:bg-white action:bg-red-500r hover:text-blue-500 p-2 px-4 rounded-full">
+                            Edit
+                        </button>
+                    </td>
+                    <td>
+                        <form id="airline-delete-form">
+                            <button @click="show = false" onclick="deleteAirline(${id})" type="button" class="text-xs bg-red-400 text-white hover:bg-white hover:text-red-500 p-2 px-4 rounded-full">
+                                Delete
+                            </button>
+                        </form>
+                    </td>
+                </tr>`;
+        });
+    }else{
         tableBody += `
-            <tr class="hover:bg-gray-300" data-id="${id}">
-                <td class="py-3">
-                    <p class="text-sm font-semibold text-gray-900">${id}</p>
+            <tr>
+                <td class="py-2">
+                    <p class="text-gray-400 text-sm">Id</p>
                 </td>
-                <td class="py-3 flex justify-center">
-                    <p class="text-sm text-gray-900">${name}</p>
+                <td class="py-2">
+                    <p class="text-gray-400 text-sm">Airline</p>
                 </td>
-                <td class="py-3">
-                    ${description}
+                <td class="py-2">
+                    <p class="text-gray-400 text-sm">Description</p>
                 </td>
-                <td class="py-3">
-                    ${flights_count}
+                <td class="py-2">
+                    <p class="text-gray-400 text-sm">Flights</p>
                 </td>
                 <td>
-                    <button @click="show = true; airlineName = '${name}'; airlineId = '${id}'; airlineDescription = '${description}';" class="text-xs bg-blue-400 text-white hover:bg-white action:bg-red-500r hover:text-blue-500 p-2 px-4 rounded-full">
+                    <button class="text-xs bg-gray-200 text-gray-400 p-2 px-4 rounded-full">
                         Edit
                     </button>
                 </td>
                 <td>
-                    <form id="airline-delete-form">
-                        <button @click="show = false" onclick="deleteAirline(${id})" type="button" class="text-xs bg-red-400 text-white hover:bg-white hover:text-red-500 p-2 px-4 rounded-full">
-                            Delete
-                        </button>
-                    </form>
+                    <button class="text-xs bg-gray-200 text-gray-400 p-2 px-4 rounded-full">
+                        Delete
+                    </button>
                 </td>
             </tr>`;
-    });
+    }
 
     return tableBody;
 }
