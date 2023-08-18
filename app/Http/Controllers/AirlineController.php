@@ -17,9 +17,4 @@ class AirlineController
             'airlines' => Airline::withCount(['flights'])->paginate(10)
         ]);
     }
-
-    /**
-     * Show the form for creating a new resource.
-     */
-
 }
