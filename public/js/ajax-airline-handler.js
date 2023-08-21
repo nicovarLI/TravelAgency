@@ -12,7 +12,6 @@ const createAirline = () => {
         },
         body: new URLSearchParams($('#add-airline-form').serialize())
     })
-
     .then(response => {
         if (response.ok) {
             $('#name-error').text('');
@@ -63,7 +62,6 @@ const updateAirline = (airlineId) => {
 const loadTable = () => {
     const page = currentPage();
     fetch(`/api/airlines?page=${page}`)
-
     .then(response => response.json())
     .then(result => {
         const airlines = result.data;
