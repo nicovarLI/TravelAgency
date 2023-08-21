@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\Airline;
 use App\Models\City;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
@@ -20,6 +21,7 @@ class FlightFactory extends Factory
         return [
             'origin_city_id' => City::factory(),
             'destination_city_id' => City::factory(),
+            'airline_id'=> Airline::factory(),
             'departure_time' => fake()->dateTime(),
             'arrival_time' => fake()->dateTime(),
         ];

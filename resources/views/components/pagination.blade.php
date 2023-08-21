@@ -1,4 +1,4 @@
-@props(['cities'])
+@props(['data'])
 <div class="mx-4 mt-4 " id="pagination-links">
-    {{ $cities->links() }}
+    {{ $data->links() }}
 </div>

@@ -14,7 +14,7 @@ class UpdateCityRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => ['max:40', 'min:2','regex:/^[a-zA-Z\s-]+$/', 'unique:cities,name,' . $this->id]
+            'name' => ['max:40', 'min:2','regex:/^[\pL\s\d]+$/u', 'unique:cities,name,' . $this->id]
         ];
     }
 }

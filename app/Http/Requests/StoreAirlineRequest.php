@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class StoreCityRequest extends FormRequest
+class StoreAirlineRequest extends FormRequest
 {
     /**
      * Get the validation rules that apply to the request.
@@ -14,7 +14,8 @@ class StoreCityRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => ['required', 'min:2', 'max:255', 'unique:cities', 'regex:/^[\pL\s\d]+$/u']
+            'name' => ['required', 'min:2', 'max:40', 'unique:airlines', 'regex:/^[\pL\s\d]+$/u'],
+            'description' => ['nullable', 'max:100', 'regex:/^[\pL\s\d]+$/u']
         ];
     }
 }
