@@ -4,7 +4,7 @@
         <section class="flex-col py-2 bg-gray-100 rounded-xl border justify-center">
             <x-airline.table :airlines="$airlines" />
             <x-airline.edit/>
-            <x-airline.pagination :airlines="$airlines"/>
+            <x-pagination :data="$airlines"/>
         </section>
         <x-airline.create />
     </div>

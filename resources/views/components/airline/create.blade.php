@@ -23,7 +23,7 @@
                 @enderror
             </div>
             <div class="mb-6 flex justify-center">
-                <button onclick="createAirline()" type="submit" class="bg-blue-400 text-white hover:bg-white action:bg-red-500r hover:text-blue-500 rounded-full py-2 px-4">
+                <button onclick="createAirline()" type="button" class="bg-blue-400 text-white hover:bg-white action:bg-red-500r hover:text-blue-500 rounded-full py-2 px-4">
                     Submit
                 </button>
             </div>

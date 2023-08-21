@@ -4,7 +4,7 @@
         <section class="flex-col py-2 bg-gray-100 rounded-xl border justify-center">
             <x-city.table :cities="$cities" />
             <x-city.edit/>
-            <x-city.pagination :cities="$cities"/>
+            <x-pagination :data="$cities"/>
         </section>
         <x-city.create />
     </div>

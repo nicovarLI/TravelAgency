@@ -1,4 +1,4 @@
-@props(['airlines'])
+@props(['data'])
 <div class="mx-4 mt-4 " id="pagination-links">
-    {{ $airlines->links() }}
+    {{ $data->links() }}
 </div>
