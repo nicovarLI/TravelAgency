@@ -24,13 +24,11 @@ const createAirline = () => {
         }
         return response.json().then(data => {
             handleValidationErrors(data.errors);
+            throw new Error('Validation Error');
         });
     })
-    .then(result => {
-        loadTable();
-    })
-    .catch(error =>
-        console.error(response.message));
+    .then(result => loadTable())
+    .catch(error => console.error);
 }
 
 const deleteAirline = (airlineId) => {
@@ -41,12 +39,9 @@ const deleteAirline = (airlineId) => {
             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
         },
     })
-
     .then(response => response.json())
-    .then(result=>
-        loadTable())
-    .catch(error =>
-        console.error(error))
+    .then(result => loadTable())
+    .catch(error => console.error)
 }
 
 const updateAirline = (airlineId) => {
@@ -61,10 +56,8 @@ const updateAirline = (airlineId) => {
     })
 
     .then(response => response.json())
-    .then(result=>
-        loadTable())
-    .catch(error =>
-        console.error(error));
+    .then(result => loadTable())
+    .catch(error => console.error);
 }
 
 const loadTable = () => {
@@ -77,9 +70,7 @@ const loadTable = () => {
         $('#table-body').html(renderTable(airlines))
         $('#pagination-links').html(getLinks(result, '/api/airlines'));
     })
-     .catch(error => {
-        console.error('Load table error: ', error);
-    })
+     .catch(error => {console.error('Load table error: ', error);})
 }
 
 const renderTable = (airlines) => {
@@ -117,27 +108,8 @@ const renderTable = (airlines) => {
     }else{
         tableBody += `
             <tr>
-                <td class="py-2">
-                    <p class="text-gray-400 text-sm">Id</p>
-                </td>
-                <td class="py-2">
-                    <p class="text-gray-400 text-sm">Airline</p>
-                </td>
-                <td class="py-2">
-                    <p class="text-gray-400 text-sm">Description</p>
-                </td>
-                <td class="py-2">
-                    <p class="text-gray-400 text-sm">Flights</p>
-                </td>
-                <td>
-                    <button class="text-xs bg-gray-200 text-gray-400 p-2 px-4 rounded-full">
-                        Edit
-                    </button>
-                </td>
-                <td>
-                    <button class="text-xs bg-gray-200 text-gray-400 p-2 px-4 rounded-full">
-                        Delete
-                    </button>
+                <td colspan="6" class="py-2 text-center">
+                    <p class="text-gray-400 text-sm">No records found</p>
                 </td>
             </tr>`;
     }
