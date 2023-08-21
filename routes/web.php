@@ -17,4 +17,4 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/cities', [CityController::class, 'index'])->name('cities.index');
 
-Route::get('/', [AirlineController::class, 'index'])->name('airline.index');
+Route::get('/', [AirlineController::class, 'index'])->name('airlines.index');

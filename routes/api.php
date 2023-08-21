@@ -20,9 +20,11 @@ Route::controller(CityController::class)
     ->name('cities.')
     ->group(function () {
         Route::get('/', 'index')->name('index');
-        Route::put('/{city}', 'update')->name('update');
         Route::post('/', 'store')->name('store');
-        Route::delete('/{city}', 'destroy')->name('destroy');
+        Route::prefix('{city}')->group(static function () {
+            Route::put('/', 'update')->name('update');
+            Route::delete('/', 'destroy')->name('destroy');
+        });
     });
 
 Route::controller(AirlineController::class)
@@ -30,7 +32,9 @@ Route::controller(AirlineController::class)
     ->name('airlines.')
     ->group(function () {
         Route::get('/', 'index')->name('index');
-        Route::put('/{airline}', 'update')->name('update');
         Route::post('/', 'store')->name('store');
-        Route::delete('/{airline}', 'destroy')->name('destroy');
+        Route::prefix('{airline}')->group(static function () {
+            Route::put('/', 'update')->name('update');
+            Route::delete('/', 'destroy')->name('destroy');
+        });
     });
