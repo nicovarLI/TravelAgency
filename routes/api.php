@@ -18,7 +18,7 @@ use Illuminate\Support\Facades\Route;
 Route::controller(CityController::class)
     ->prefix('cities')
     ->name('cities.')
-    ->group(function () {
+    ->group(static function () {
         Route::get('/', 'index')->name('index');
         Route::post('/', 'store')->name('store');
         Route::prefix('{city}')->group(static function () {
@@ -30,7 +30,7 @@ Route::controller(CityController::class)
 Route::controller(AirlineController::class)
     ->prefix('airlines')
     ->name('airlines.')
-    ->group(function () {
+    ->group(static function () {
         Route::get('/', 'index')->name('index');
         Route::post('/', 'store')->name('store');
         Route::prefix('{airline}')->group(static function () {
