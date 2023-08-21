@@ -143,6 +143,3 @@ const renderTable = (cities) => {
 
     return tableBody;
 }
-
-const currentPage = () => new URLSearchParams(window.location.search).get('page') || 1;
-
