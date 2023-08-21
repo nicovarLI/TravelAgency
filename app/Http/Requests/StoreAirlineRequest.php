@@ -15,7 +15,7 @@ class StoreAirlineRequest extends FormRequest
     {
         return [
             'name' => ['required', 'min:2', 'max:40', 'unique:airlines', 'regex:/^[\pL\s\d]+$/u'],
-            'description' => ['max:100', 'regex:/^[\pL\s\d]+$/u']
+            'description' => ['nullable', 'max:100', 'regex:/^[\pL\s\d]+$/u']
         ];
     }
 }

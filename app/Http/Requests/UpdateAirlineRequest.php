@@ -15,7 +15,7 @@ class UpdateAirlineRequest extends FormRequest
     {
         return [
             'name' => ['min:2', 'max:40', 'regex:/^[\pL\s\d]+$/u', 'unique:airlines,name,' . $this->id],
-            'description' => ['max:100','regex:/^[\pL\s\d]+$/u']
+            'description' => ['nullable', 'max:100','regex:/^[\pL\s\d]+$/u']
         ];
     }
 }
