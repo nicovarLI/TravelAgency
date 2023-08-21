@@ -21,11 +21,10 @@ const createAirline = () => {
 
             return response.json();
 
-        } else {
-            return response.json().then(data => {
-                handleValidationErrors(data.errors);
-            });
         }
+        return response.json().then(data => {
+            handleValidationErrors(data.errors);
+        });
     })
     .then(result => {
         loadTable();

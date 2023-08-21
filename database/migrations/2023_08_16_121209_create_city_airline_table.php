@@ -12,11 +12,8 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('city_airline', function (Blueprint $table) {
-            $table->unsignedBigInteger('airline_id');
-            $table->unsignedBigInteger('city_id');
-
-            $table->foreign('airline_id')->references('id')->on('airlines')->onDelete('cascade');
-            $table->foreign('city_id')->references('id')->on('cities')->onDelete('cascade');
+            $table->foreignId('airline_id')->constrained()->cascadeOnDelete();
+            $table->foreignId('city_id')->constrained()->cascadeOnDelete();
 
             $table->primary(['airline_id', 'city_id']);
         });
