@@ -62,3 +62,5 @@ const handleValidationErrors = (errors) => {
 }
 
 const currentPage = () => new URLSearchParams(window.location.search).get('page') || 1;
+
+const getCsrfToken = () => $('meta[name="csrf-token"]').attr('content');

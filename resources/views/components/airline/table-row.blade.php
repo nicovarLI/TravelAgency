@@ -19,7 +19,6 @@
         </td>
         <td>
             <form id="airline-delete-form">
-                <input type="hidden" name="id" value="{{$airline->id}}"/>
                 <button @click="show = false" onclick="deleteAirline({{$airline->id}})" type="button" class="text-xs bg-red-400 text-white hover:bg-white hover:text-red-500 p-2 px-4 rounded-full">
                     Delete
                 </button>

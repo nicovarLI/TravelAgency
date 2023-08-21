@@ -14,8 +14,8 @@ class StoreAirlineRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => ['required', 'min:2', 'max:40', 'unique:airlines', 'alpha_num:ascii'],
-            'description' => ['max:100', 'alpha_num:ascii']
+            'name' => ['required', 'min:2', 'max:40', 'unique:airlines', 'regex:/^[\pL\s\d]+$/u'],
+            'description' => ['max:100', 'regex:/^[\pL\s\d]+$/u']
         ];
     }
 }

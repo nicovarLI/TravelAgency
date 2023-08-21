@@ -8,7 +8,7 @@ const createAirline = () => {
         headers: {
             'Content-type': 'application/x-www-form-urlencoded',
             'X-Requested-With': 'XMLHttpRequest',
-            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            'X-CSRF-TOKEN': getCsrfToken()
         },
         body: new URLSearchParams($('#add-airline-form').serialize())
     })
@@ -36,7 +36,7 @@ const deleteAirline = (airlineId) => {
         method: 'DELETE',
         headers: {
             'X-Requested-With': 'XMLHttpRequest',
-            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            'X-CSRF-TOKEN': getCsrfToken()
         },
     })
     .then(response => response.json())
@@ -50,7 +50,7 @@ const updateAirline = (airlineId) => {
         headers: {
             'Content-type': 'application/x-www-form-urlencoded',
             'X-Requested-With': 'XMLHttpRequest',
-            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            'X-CSRF-TOKEN': getCsrfToken()
         },
         body: new URLSearchParams($('#airlines-update-form').serialize())
     })
