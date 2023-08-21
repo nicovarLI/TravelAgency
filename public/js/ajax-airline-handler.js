@@ -2,8 +2,10 @@ $('form').submit(function(event){
     event.preventDefault();
 })
 
+const baseURL = '/api/airlines'
+
 const createAirline = () => {
-    fetch('api/airlines', {
+    fetch(baseURL, {
         method: 'POST',
         headers: {
             'Content-type': 'application/x-www-form-urlencoded',
@@ -32,7 +34,7 @@ const createAirline = () => {
 }
 
 const deleteAirline = (airlineId) => {
-    fetch(`api/airlines/${airlineId}`, {
+    fetch(`${baseURL}/${airlineId}`, {
         method: 'DELETE',
         headers: {
             'X-Requested-With': 'XMLHttpRequest',
@@ -45,7 +47,7 @@ const deleteAirline = (airlineId) => {
 }
 
 const updateAirline = (airlineId) => {
-    fetch(`api/airlines/${airlineId}`, {
+    fetch(`${baseURL}/${airlineId}`, {
         method: 'PUT',
         headers: {
             'Content-type': 'application/x-www-form-urlencoded',
@@ -62,12 +64,11 @@ const updateAirline = (airlineId) => {
 
 const loadTable = () => {
     const page = currentPage();
-    fetch(`/api/airlines?page=${page}`)
+    fetch(`${baseURL}?page=${page}`)
 
     .then(response => response.json())
     .then(result => {
-        const airlines = result.data;
-        $('#table-body').html(renderTable(airlines))
+        $('#table-body').html(renderTable(result.data))
         $('#pagination-links').html(getLinks(result, '/api/airlines'));
     })
      .catch(error => {console.error('Load table error: ', error);})

@@ -8,9 +8,11 @@ $('form').submit(function(event){
     event.preventDefault();
 })
 
+const baseURL = 'api/cities';
+
 const createCity = () => {
     $.ajax({
-        url: `api/cities`,
+        url: baseURL,
         method: 'POST',
         data: $('#add-city-form').serialize(),
         cache: false,
@@ -29,7 +31,7 @@ const createCity = () => {
 
 const deleteCity = (cityId) => {
     $.ajax({
-        url: `/api/cities/${cityId}`,
+        url: `${baseURL}/${cityId}`,
         method: 'DELETE',
         cache: false,
         success:function(response)
@@ -45,7 +47,7 @@ const deleteCity = (cityId) => {
 
 const updateCity = (cityId) => {
     $.ajax({
-        url: `/api/cities/${cityId}`,
+        url: `${baseURL}/${cityId}`,
         method: 'PUT',
         data: $('#cities-update-form').serialize(),
         cache: false,
@@ -64,7 +66,7 @@ const loadTable = () => {
     const page = currentPage();
 
     $.ajax({
-        url: `/api/cities?page=${page}`,
+        url: `${baseURL}?page=${page}`,
         method: 'GET',
         success:function(response)
         {

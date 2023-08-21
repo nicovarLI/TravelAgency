@@ -16,5 +16,7 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/cities', [CityController::class, 'index'])->name('cities.index');
+Route::get('/airlines', [AirlineController::class, 'index'])->name('airlines.index');
 
-Route::get('/', [AirlineController::class, 'index'])->name('airlines.index');
+Route::redirect('/', '/airlines');
+Route::redirect('{unknown}', '/airlines')->where('unknown', '(.*)');
