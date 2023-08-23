@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Api\AirlineController;
 use App\Http\Controllers\Api\CityController;
+use App\Http\Controllers\Api\FlightController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -38,5 +39,17 @@ Route::controller(AirlineController::class)
             Route::delete('/', 'destroy')->name('destroy');
             Route::get('/cities','getCities')->name('cities');
             Route::delete('/cities','destroyCities')->name('destroyCities');
+        });
+    });
+
+Route::controller(FlightController::class)
+    ->prefix('flights')
+    ->name('flights.')
+    ->group(static function () {
+        Route::get('/', 'index')->name('index');
+        Route::post('/', 'store')->name('store');
+        Route::prefix('{flight}')->group(static function () {
+            Route::put('/', 'update')->name('update');
+            Route::delete('/', 'destroy')->name('destroy');
         });
     });
