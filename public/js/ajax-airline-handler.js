@@ -79,8 +79,7 @@ const deleteCityAirline = (airlineId, cities) => {
 }
 
 const loadTable = () => {
-    const page = currentPage();
-    fetch(`${baseURL}?page=${page}`)
+    fetch(`${baseURL}?page=${currentPage()}`)
     .then(response => response.json())
     .then(result => {
         $('#table-body').html(renderTable(result.data))

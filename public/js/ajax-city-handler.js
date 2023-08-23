@@ -63,16 +63,12 @@ const updateCity = (cityId) => {
 }
 
 const loadTable = () => {
-    const page = currentPage();
-
     $.ajax({
-        url: `${baseURL}?page=${page}`,
+        url: `${baseURL}?page=${currentPage()}`,
         method: 'GET',
         success:function(response)
         {
-            const cities = response.data;
-
-            $('#table-body').html(renderTable(cities))
+            $('#table-body').html(renderTable(response.data))
             $('#pagination-links').html(getLinks(response, '/api/cities'));
         },
         error: function(xhr) {
