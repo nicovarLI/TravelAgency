@@ -18,6 +18,6 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/cities', [CityController::class, 'index'])->name('cities.index');
 Route::get('/airlines', [AirlineController::class, 'index'])->name('airlines.index');
-Route::get('/flights', [FlightController::class, 'index'])->name('flights.index');
+Route::get('/', [FlightController::class, 'index'])->name('flights.index');
 
-Route::redirect('{unknown}', '/airlines')->where('unknown', '(.*)');
+//Route::redirect('{unknown}', '/flights')->where('unknown', '(.*)');

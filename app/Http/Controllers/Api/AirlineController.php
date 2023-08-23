@@ -7,7 +7,6 @@ use App\Http\Requests\UpdateAirlineRequest;
 use App\Models\Airline;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
 
 class AirlineController
 {
