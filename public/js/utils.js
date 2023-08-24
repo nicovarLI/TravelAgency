@@ -1,5 +1,4 @@
 const getLinks = ({ links, from, to, total }, url) => {
-    console.log(links);
     const newLinks = customizePaginationLinks(links, url);
 
     linksNav = `

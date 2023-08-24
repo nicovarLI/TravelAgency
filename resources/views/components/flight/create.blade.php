@@ -6,12 +6,21 @@
                 <label class="block mb-2 uppercase font-bold text-xs text-gray-700" >
                     Airline
                 </label>
+                <select class="w-full" id="airline-select" name="airline-select">
+                    <option value="">Select an airline</option>
+                </select>
                 <label class="block mb-2 uppercase font-bold text-xs text-gray-700" >
                     Origin
                 </label>
+                <select class="w-full" id="origin-select" name="origin-select">
+                    <option value="">Select an origin</option>
+                </select>
                 <label class="block mb-2 uppercase font-bold text-xs text-gray-700" >
                     Destination
                 </label>
+                <select class="w-full" id="destination-select" name="destination-select">
+                    <option value="">Select a destination</option>
+                </select>
                 <label class="block mb-2 uppercase font-bold text-xs text-gray-700" >
                     Departure time
                 </label>
