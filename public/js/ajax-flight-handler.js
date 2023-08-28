@@ -1,16 +1,20 @@
 const apiURL = "/api/flights";
 
+$("form").submit(function (event) {
+    event.preventDefault();
+});
+
 const createFlight = () => {
     axios
-        .Post(apiURL, {
-            headers: { "content-type": "application/x-www-form-urlencoded" },
-            data: $("#add-flight-form").serialize(),
+        .post(apiURL, $("#add-flight-form").serialize(), {
+            headers: {
+                "content-type": "application/x-www-form-urlencoded",
+                "X-CSRF-TOKEN": getCsrfToken(),
+            },
         })
         .then(function (response) {
-            console.log(response.data);
-            console.log(response.headers);
-            console.log(response.status);
-            console.log(response.config);
+            document.forms["add-flight-form"].reset();
+            loadTable();
         })
         .catch(function (error) {
             console.log(error);
@@ -30,15 +34,12 @@ const deleteFlight = (flightId) => {
 
 const updateFlight = (flightId) => {
     axios
-        .Put(`${apiURL}/${flightId}`, {
+        .put(`${apiURL}/${flightId}`,$("#flight-update-form").serialize(), {
             headers: { "content-type": "application/x-www-form-urlencoded" },
             data: $("#update-flight-form").serialize(),
         })
         .then(function (response) {
-            console.log(response.data);
-            console.log(response.headers);
-            console.log(response.status);
-            console.log(response.config);
+            loadTable();
         })
         .catch(function (error) {
             console.log(error);
@@ -81,10 +82,10 @@ $(document).ready(function () {
 
         $.ajax({
             url: `api/airlines/${airlineId}/cities`,
-            dataType: 'json',
-            success: function(data) {
+            dataType: "json",
+            success: function (data) {
                 populateCitySelects(data);
-            }
+            },
         });
     };
 
@@ -106,7 +107,6 @@ $(document).ready(function () {
             data: cities,
         });
     };
-
 });
 
 const loadTable = () => {
@@ -153,7 +153,7 @@ const renderTable = (flights) => {
                         ${arrival_time}
                     </td>
                     <td>
-                        <button @click="show = true; flightId = '${id}';" class="text-xs bg-blue-400 text-white hover:bg-white action:bg-red-500r hover:text-blue-500 p-2 px-4 rounded-full">
+                        <button @click="show = true; flightId = '${id}'; departureTime = '${departure_time}'; arrivalTime = '${arrival_time}'" class="text-xs bg-blue-400 text-white hover:bg-white action:bg-red-500r hover:text-blue-500 p-2 px-4 rounded-full">
                             Edit
                         </button>
                     </td>

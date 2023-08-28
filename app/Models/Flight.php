@@ -12,8 +12,12 @@ class Flight extends Model
 {
     use HasFactory;
 
-    protected $guarded = [
-        'id'
+    protected $fillable = [
+        'origin_city_id',
+        'destination_city_id',
+        'airline_id',
+        'departure_time',
+        'arrival_time',
     ];
 
     public function originCity(): BelongsTo

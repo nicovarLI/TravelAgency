@@ -14,7 +14,8 @@ class UpdateFlightRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'departure_time' => ['required'],
+            'arrival_time' => ['required'],
         ];
     }
 }
