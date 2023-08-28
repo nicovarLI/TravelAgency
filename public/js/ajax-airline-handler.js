@@ -72,6 +72,27 @@ const loadTable = () => {
      .catch(error => {console.error('Load table error: ', error);})
 }
 
+$(document).ready(function () {
+    $("#city-select").select2({
+        ajax: {
+            url: "/api/cities",
+            dataType: "json",
+            processResults: function (response) {
+                return {
+                    results: $.map(response.data, function (item) {
+                        return {
+                            id: item.id,
+                            text: item.name,
+                        };
+                    }),
+                };
+            },
+        },
+        multiple: true,
+        minimumResultsForSearch: Infinity,
+    });
+});
+
 const renderTable = (airlines) => {
     let tableBody = '';
     if(airlines.length > 0){
