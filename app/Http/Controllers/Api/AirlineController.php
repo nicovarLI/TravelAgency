@@ -9,6 +9,7 @@ use App\Models\City;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Js;
 
 class AirlineController
 {
@@ -48,5 +49,17 @@ class AirlineController
             'message' => 'Airline deleted.',
             'status' => 'success',
         ]);
+    }
+
+    public function destroyCities(Airline $airline): JsonResponse
+    {
+        //TODO TERMINAR ESTE METODO ASQUEROSO
+        $airline->cities()->detach(request()->cityIds);
+        return response()->json(['message' => 'City-airline relationships deleted successfully'], 200);
+    }
+
+    public function getCities(Airline $airline): JsonResponse
+    {
+        return response()->json($airline->cities);
     }
 }

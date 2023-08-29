@@ -44,6 +44,11 @@ const deleteAirline = (airlineId) => {
     .catch(error => console.error)
 }
 
+const deleteCityAirline = (airlineId) => {
+    //TODO TERMINAR ESTO
+    fetch(`${baseURL}`)
+}
+
 const updateAirline = (airlineId) => {
     fetch(`${baseURL}/${airlineId}`, {
         method: 'PUT',
@@ -137,4 +142,53 @@ const renderTable = (airlines) => {
     return tableBody;
 }
 
+const loadCitySelect = (airlineId) => {
+    $("#edit-city-select").select2({
+        ajax: {
+            url: "/api/cities",
+            dataType: "json",
+            processResults: function (response) {
+                return {
+                    results: $.map(response.data, function (item) {
+                        return {
+                            id: item.id,
+                            text: item.name,
+                        };
+                    }),
+                };
+            },
+        },
+        placeholder: "Select cities",
+        multiple: true,
+        minimumResultsForSearch: Infinity,
+    });
+    $("#edit-location-select").select2({
+        ajax: {
+            url: `/api/airlines/${airlineId}/cities`,
+            dataType: "json",
+            processResults: function (response) {
+                return {
+                    results: $.map(response, function (item) {
+                        return {
+                            id: item.id,
+                            text: item.name,
+                        };
+                    }),
+                };
+            },
+        },
+        placeholder: "Select locations",
+        multiple: true,
+        minimumResultsForSearch: Infinity,
+    });
+};
 
+$("#edit-location-select").on("change", function () {
+    const selectedItems = $(this).val();
+    let deleteButton = document.getElementById('delete-locations-button');
+    if(selectedItems && selectedItems.length > 0){
+        deleteButton.hidden = false;
+    }else{
+        deleteButton.hidden = true;
+    }
+});
