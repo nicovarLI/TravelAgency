@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Requests\StoreAirlineRequest;
 use App\Http\Requests\UpdateAirlineRequest;
 use App\Models\Airline;
+use App\Models\City;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -18,7 +19,10 @@ class AirlineController
 
     public function store(StoreAirlineRequest $request): JsonResponse
     {
-        Airline::create($request->validated());
+        $airline = Airline::create($request->validated());
+
+        $existingCities = City::whereIn('id', explode(',', $request['cityIds']))->get();
+        $airline->cities()->syncWithoutDetaching($existingCities);
 
         return response()->json([
             'message' => 'Airline stored.',

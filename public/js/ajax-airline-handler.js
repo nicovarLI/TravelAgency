@@ -5,6 +5,7 @@ $('form').submit(function(event){
 const baseURL = '/api/airlines'
 
 const createAirline = () => {
+    const cityIdsString = $("#city-select").val().join(',');
     fetch(baseURL, {
         method: 'POST',
         headers: {
@@ -12,16 +13,14 @@ const createAirline = () => {
             'X-Requested-With': 'XMLHttpRequest',
             'X-CSRF-TOKEN': getCsrfToken()
         },
-        body: new URLSearchParams($('#add-airline-form').serialize())
+        body: new URLSearchParams($('#add-airline-form').serialize() + '&cityIds=' + cityIdsString)
     })
     .then(response => {
         if (response.ok) {
             $('#name-error').text('');
             $('#description-error').text('');
             document.forms["add-airline-form"].reset();
-
             return response.json();
-
         }
         return response.json().then(data => {
             handleValidationErrors(data.errors);
@@ -88,6 +87,7 @@ $(document).ready(function () {
                 };
             },
         },
+        placeholder: "Select cities",
         multiple: true,
         minimumResultsForSearch: Infinity,
     });
