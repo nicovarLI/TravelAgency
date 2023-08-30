@@ -19,6 +19,7 @@ const createAirline = () => {
             $('#name-error').text('');
             $('#description-error').text('');
             document.forms["add-airline-form"].reset();
+            $("#city-select").val([]).trigger("change");
             return response.json();
         }
         return response.json().then(data => {
@@ -53,11 +54,10 @@ const updateAirline = (airlineId) => {
         },
         body: new URLSearchParams($('#airlines-update-form').serialize()+ '&cityIds=' + $("#edit-city-select").val().join(','))
     })
-
     .then(response => response.json())
     .then(result =>
-        deleteCityAirline(airlineId, $("#edit-location-select").val()),
         loadTable(),
+        deleteCityAirline(airlineId, $("#edit-location-select").val()),
         $("#edit-city-select").val([]).trigger("change")
     )
     .catch(error => console.error);
@@ -156,25 +156,6 @@ const renderTable = (airlines) => {
 }
 
 const loadCitySelect = (airlineId) => {
-    $("#edit-city-select").select2({
-        ajax: {
-            url: "/api/cities",
-            dataType: "json",
-            processResults: function (response) {
-                return {
-                    results: $.map(response.data, function (item) {
-                        return {
-                            id: item.id,
-                            text: item.name,
-                        };
-                    }),
-                };
-            },
-        },
-        placeholder: "Select cities",
-        multiple: true,
-        minimumResultsForSearch: Infinity,
-    });
     $("#edit-location-select").select2({
         ajax: {
             url: `/api/airlines/${airlineId}/cities`,
@@ -191,6 +172,25 @@ const loadCitySelect = (airlineId) => {
             },
         },
         placeholder: "Select locations",
+        multiple: true,
+        minimumResultsForSearch: Infinity,
+    });
+    $("#edit-city-select").select2({
+        ajax: {
+            url: "/api/cities",
+            dataType: "json",
+            processResults: function (response) {
+                return {
+                    results: $.map(response.data, function (item) {
+                        return {
+                            id: item.id,
+                            text: item.name,
+                        };
+                    }),
+                };
+            },
+        },
+        placeholder: "Select cities",
         multiple: true,
         minimumResultsForSearch: Infinity,
     });

@@ -7,7 +7,7 @@
 
         <span class="text-md pl-3 text-gray-500">Description</span>
         <x-form.input name="description" id="description" x-model="airlineDescription" x-text="airlineDescription" />
-        <span class="text-md pl-3 text-gray-500">Cities</span>
+        <span class="text-md pl-3 text-gray-500">Add locations</span>
         <select class="mx-auto" id="edit-city-select" name="edit-city-select"></select>
         <span class="text-md pl-3 text-gray-500">Remove locations</span>
         <select class="mx-auto" id="edit-location-select" name="edit-location-select"></select>
