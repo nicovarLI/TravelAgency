@@ -37,6 +37,6 @@ Route::controller(AirlineController::class)
             Route::put('/', 'update')->name('update');
             Route::delete('/', 'destroy')->name('destroy');
             Route::get('/cities','getCities')->name('cities');
-            Route::delete('/cities','destroyCities')->name('cities');
+            Route::delete('/cities','destroyCities')->name('destroyCities');
         });
     });
