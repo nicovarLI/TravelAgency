@@ -5,7 +5,6 @@ $('form').submit(function(event){
 const baseURL = '/api/airlines'
 
 const createAirline = () => {
-    const cityIdsString = $("#city-select").val().join(',');
     fetch(baseURL, {
         method: 'POST',
         headers: {
@@ -13,7 +12,7 @@ const createAirline = () => {
             'X-Requested-With': 'XMLHttpRequest',
             'X-CSRF-TOKEN': getCsrfToken()
         },
-        body: new URLSearchParams($('#add-airline-form').serialize() + '&cityIds=' + cityIdsString)
+        body: new URLSearchParams($('#add-airline-form').serialize() + '&cityIds=' + $("#city-select").val().join(','))
     })
     .then(response => {
         if (response.ok) {
@@ -44,11 +43,6 @@ const deleteAirline = (airlineId) => {
     .catch(error => console.error)
 }
 
-const deleteCityAirline = (airlineId) => {
-    //TODO TERMINAR ESTO
-    fetch(`${baseURL}`)
-}
-
 const updateAirline = (airlineId) => {
     fetch(`${baseURL}/${airlineId}`, {
         method: 'PUT',
@@ -57,12 +51,31 @@ const updateAirline = (airlineId) => {
             'X-Requested-With': 'XMLHttpRequest',
             'X-CSRF-TOKEN': getCsrfToken()
         },
-        body: new URLSearchParams($('#airlines-update-form').serialize())
+        body: new URLSearchParams($('#airlines-update-form').serialize()+ '&cityIds=' + $("#edit-city-select").val().join(','))
     })
 
     .then(response => response.json())
-    .then(result => loadTable())
+    .then(result =>
+        deleteCityAirline(airlineId, $("#edit-location-select").val()),
+        loadTable(),
+        $("#edit-city-select").val([]).trigger("change")
+    )
     .catch(error => console.error);
+}
+
+const deleteCityAirline = (airlineId, cities) => {
+    fetch(`${baseURL}/${airlineId}/cities`,{
+        method: 'DELETE',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-Requested-With': 'XMLHttpRequest',
+            'X-CSRF-TOKEN': getCsrfToken()
+        },
+        body: JSON.stringify({ cityIds: cities })
+    })
+    .then(response => response.json())
+    .then(result => $("#edit-location-select").val([]).trigger("change"))
+    .catch(error => console.error)
 }
 
 const loadTable = () => {
@@ -182,13 +195,3 @@ const loadCitySelect = (airlineId) => {
         minimumResultsForSearch: Infinity,
     });
 };
-
-$("#edit-location-select").on("change", function () {
-    const selectedItems = $(this).val();
-    let deleteButton = document.getElementById('delete-locations-button');
-    if(selectedItems && selectedItems.length > 0){
-        deleteButton.hidden = false;
-    }else{
-        deleteButton.hidden = true;
-    }
-});

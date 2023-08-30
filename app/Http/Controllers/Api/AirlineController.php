@@ -34,6 +34,8 @@ class AirlineController
     public function update(UpdateAirlineRequest $request, Airline $airline): JsonResponse
     {
         $airline->update($request->validated());
+        $existingCities = City::whereIn('id', explode(',', $request['cityIds']))->get();
+        $airline->cities()->syncWithoutDetaching($existingCities);
 
         return response()->json([
             'message' => 'Airline updated.',
@@ -53,9 +55,12 @@ class AirlineController
 
     public function destroyCities(Airline $airline): JsonResponse
     {
-        //TODO TERMINAR ESTE METODO ASQUEROSO
         $airline->cities()->detach(request()->cityIds);
-        return response()->json(['message' => 'City-airline relationships deleted successfully'], 200);
+
+        return response()->json([
+            'message' => 'City-airline relationships deleted successfully',
+            'status' => 'success',
+        ]);
     }
 
     public function getCities(Airline $airline): JsonResponse
