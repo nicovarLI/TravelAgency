@@ -46,6 +46,7 @@ const updateFlight = (flightId) => {
         });
 };
 
+
 $(document).ready(function () {
     $("#airline-select").select2({
         ajax: {
@@ -64,9 +65,8 @@ $(document).ready(function () {
         },
         minimumResultsForSearch: Infinity,
     });
-
     $("#airline-select").on("select2:select", function (e) {
-        handleAirlineSelection(e.params.data.id);
+        handleAirlineSelection(e.params.data.id, "#origin-select", "#destination-select");
     });
     $("#origin-select").select2({
         minimumResultsForSearch: Infinity,
@@ -76,38 +76,51 @@ $(document).ready(function () {
         minimumResultsForSearch: Infinity,
         disabled: true,
     });
-
-    const handleAirlineSelection = (airlineId) => {
-        $("#origin-select, #destination-select").prop("disabled", false);
-
-        $.ajax({
-            url: `api/airlines/${airlineId}/cities`,
-            dataType: "json",
-            success: function (data) {
-                populateCitySelects(data);
-            },
-        });
-    };
-
-    const populateCitySelects = (data) => {
-        $("#origin-select").empty();
-        $("#destination-select").empty();
-
-        let cities = $.map(data, function (item) {
-            return {
-                id: item.id,
-                text: item.name,
-            };
-        });
-        $("#origin-select").select2({
-            data: cities,
-        });
-
-        $("#destination-select").select2({
-            data: cities,
-        });
-    };
+    $("#edit-origin-select").select2({
+        minimumResultsForSearch: Infinity,
+    });
+    $("#edit-destination-select").select2({
+        minimumResultsForSearch: Infinity,
+    });
 });
+
+const loadFlightSelects = (airlineId, originId, destinationId) => {
+    handleAirlineSelection(airlineId, "#edit-origin-select", "#edit-destination-select", function() {
+        $("#edit-origin-select").val(originId).trigger("change");
+        $("#edit-destination-select").val(destinationId).trigger("change");
+    });
+
+}
+
+const handleAirlineSelection = (airlineId, origin, destination, callback) => {
+    $(`${origin}, ${destination}`).prop("disabled", false);
+
+    $.ajax({
+        url: `api/airlines/${airlineId}/cities`,
+        dataType: "json",
+        success: function (data) {
+            let cities = $.map(data, function (item) {
+                return {
+                    id: item.id,
+                    text: item.name,
+                };
+            });
+            populateCitySelects(cities, origin, destination, callback);
+        },
+    });
+};
+
+const populateCitySelects = (cities, origin, destination, callback) => {
+    $(`${origin}`).empty();
+    $(`${destination}`).empty();
+    $(`${origin}`).select2({
+        data: cities,
+    });
+    $(`${destination}`).select2({
+        data: cities,
+    });
+    callback();
+};
 
 const loadTable = () => {
     axios(apiURL, { params: { page: currentPage() } })
