@@ -130,7 +130,7 @@ const renderTable = (airlines) => {
                         ${flights_count}
                     </td>
                     <td>
-                        <button @click="show = true; airlineName = '${name}'; airlineId = '${id}'; airlineDescription = '${description}';" class="text-xs bg-blue-400 text-white hover:bg-white action:bg-red-500r hover:text-blue-500 p-2 px-4 rounded-full">
+                        <button @click="show = true; airlineName = '${name}'; airlineId = '${id}'; airlineDescription = '${description}';" onclick="loadCitySelect('${id}')" class="text-xs bg-blue-400 text-white hover:bg-white action:bg-red-500r hover:text-blue-500 p-2 px-4 rounded-full">
                             Edit
                         </button>
                     </td>
