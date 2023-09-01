@@ -34,7 +34,7 @@ const deleteFlight = (flightId) => {
 
 const updateFlight = (flightId) => {
     axios
-        .put(`${apiURL}/${flightId}`,$("#flight-update-form").serialize(), {
+        .put(`${apiURL}/${flightId}`, $("#flight-update-form").serialize(), {
             headers: { "content-type": "application/x-www-form-urlencoded" },
             data: $("#update-flight-form").serialize(),
         })
@@ -46,55 +46,78 @@ const updateFlight = (flightId) => {
         });
 };
 
-
 $(document).ready(function () {
-    $("#airline-select").select2({
-        ajax: {
-            url: "/api/airlines",
-            dataType: "json",
-            processResults: function (response) {
+    axios
+        .get("/api/airlines")
+        .then(function (response) {
+            const airlines = $.map(response.data.data, function (item) {
                 return {
-                    results: $.map(response.data, function (item) {
-                        return {
-                            id: item.id,
-                            text: item.name,
-                        };
-                    }),
+                    id: item.id,
+                    text: item.name,
                 };
-            },
-        },
+            });
+            $('#airline-select, #edit-airline-select').select2({
+                data: airlines,
+                placeholder: "Select an airline",
+            });
+        });
+
+    $("#airline-select, #edit-airline-select").select2({
         minimumResultsForSearch: Infinity,
     });
     $("#airline-select").on("select2:select", function (e) {
-        handleAirlineSelection(e.params.data.id, "#origin-select", "#destination-select", null);
+        handleAirlineSelection(
+            e.params.data.id,
+            "#origin-select",
+            "#destination-select"
+        );
+    });
+    $("#edit-airline-select").on("select2:select", function (e) {
+        handleAirlineSelection(
+            e.params.data.id,
+            "#edit-origin-select",
+            "#edit-destination-select"
+        );
     });
     $("#origin-select").select2({
         minimumResultsForSearch: Infinity,
         disabled: true,
-        placeholder: 'Select a origin'
+        placeholder: "Select a origin",
     });
     $("#destination-select").select2({
         minimumResultsForSearch: Infinity,
         disabled: true,
-        placeholder: 'Select a destination'
+        placeholder: "Select a destination",
     });
-    $("#edit-origin-select").select2({
-        minimumResultsForSearch: Infinity,
-    });
-    $("#edit-destination-select").select2({
+    $("#edit-origin-select, #edit-destination-select").select2({
         minimumResultsForSearch: Infinity,
     });
 });
 
-let selectedCities = [];
-
 const loadFlightSelects = (airlineId, originId, destinationId) => {
-    handleAirlineSelection(airlineId, "#edit-origin-select", "#edit-destination-select", function() {
-        $("#edit-origin-select").val(originId).trigger("change");
-        $("#edit-destination-select").val(destinationId).trigger("change");
-    });
-
-}
+    handleAirlineSelection( airlineId, "#edit-origin-select", "#edit-destination-select", function () {
+            $("#edit-airline-select").val(airlineId).trigger("change");
+            $("#edit-origin-select").val(originId).trigger("change");
+            $("#edit-destination-select").val(destinationId).trigger("change");
+            $("#edit-destination-select").val(destinationId).trigger({
+                type : 'select2:select',
+                params : {
+                    data: {
+                        id : destinationId
+                    }
+                }
+            });
+            $("#edit-origin-select").val(originId).trigger({
+                type : 'select2:select',
+                params : {
+                    data: {
+                        id : originId
+                    }
+                }
+            });
+        }
+    );
+};
 
 const handleAirlineSelection = (airlineId, origin, destination, callback) => {
     $(`${origin}, ${destination}`).prop("disabled", false);
@@ -115,44 +138,67 @@ const handleAirlineSelection = (airlineId, origin, destination, callback) => {
 };
 
 const populateCitySelects = (cities, origin, destination, callback) => {
-     $(`${origin}`).empty();
-     $(`${destination}`).empty();
-    cities.unshift({id: ''});
+    $(`${origin}`).empty();
+    $(`${destination}`).empty();
+    cities.unshift({ id: "" });
     $(`${origin}`).select2({
         data: cities,
-        placeholder: 'Select an origin'
+        placeholder: "Select an origin",
     });
     $(`${destination}`).select2({
         data: cities,
-        placeholder: 'Select a destination'
+        placeholder: "Select a destination",
     });
-    if(callback){
+    if (callback) {
         callback();
     }
-
 };
 
-$("#origin-select").on('select2:select', function (e) {
-    $("#destination-select > option").each(function() {
-        $(this).prop('disabled', false);
+
+$("#origin-select").on("select2:select", function (e) {
+    console.log(e.params);
+    disableSelection("#destination-select", e.params.data.id);
+});
+
+$("#destination-select").on("select2:select", function (e) {
+    disableSelection("#origin-select", e.params.data.id);
+});
+
+$("#edit-origin-select").on("select2:select", function (e) {
+    disableSelection("#edit-destination-select", e.params.data.id);
+});
+
+$("#edit-destination-select").on("select2:select", function (e) {
+    console.log(e.params);
+    disableSelection("#edit-origin-select", e.params.data.id);
+});
+
+$("#origin-select").on("select2:unselect", function (e) {
+    enableOnUnselect("#destination-select", e.params.data.id);
+});
+
+$("#destination-select").on("select2:unselect", function (e) {
+    enableOnUnselect("#origin-select", e.params.data.id);
+});
+
+$("#edit-origin-select").on("select2:unselect", function (e) {
+    enableOnUnselect("#edit-destination-select", e.params.data.id);
+});
+
+$("#edit-destination-select").on("select2:unselect", function (e) {
+    enableOnUnselect("#edit-origin-select", e.params.data.id);
+});
+
+const disableSelection = (select, value) => {
+    $(`${select} > option`).each(function () {
+        $(this).prop("disabled", false);
     });
-    $(`#destination-select option[value='${e.params.data.id}']`).prop('disabled', true);
-});
+    $(`${select} option[value='${value}']`).prop("disabled", true);
+};
 
-$("#destination-select").on('select2:select', function (e) {
-    $("#origin-select > option").each(function() {
-        $(this).prop('disabled', false);
-    });
-    $(`#origin-select option[value='${e.params.data.id}']`).prop('disabled', true);
-});
-
-$("#origin-select").on('select2:unselect', function (e) {
-    $(`#destination-select option[value='${e.params.data.id}']`).prop('disabled', false);
-});
-
-$("#destination-select").on('select2:unselect', function (e) {
-    $(`#origin-select option[value='${e.params.data.id}']`).prop('disabled', false);
-});
+const enableOnUnselect = (select, value) => {
+    $(`${select} option[value='${value}']`).prop("disabled", false);
+};
 
 const loadTable = () => {
     axios(apiURL, { params: { page: currentPage() } })
@@ -198,7 +244,7 @@ const renderTable = (flights) => {
                         ${arrival_time}
                     </td>
                     <td>
-                        <button @click="show = true; flightId = '${id}'; departureTime = '${departure_time}'; arrivalTime = '${arrival_time}'" class="text-xs bg-blue-400 text-white hover:bg-white action:bg-red-500r hover:text-blue-500 p-2 px-4 rounded-full">
+                        <button @click="show = true; loadFlightSelects(${airline.id},${origin_city.id},${destination_city.id}) ; flightId = '${id}'; departureTime = '${departure_time}'; arrivalTime = '${arrival_time}'" class="text-xs bg-blue-400 text-white hover:bg-white action:bg-red-500r hover:text-blue-500 p-2 px-4 rounded-full">
                             Edit
                         </button>
                     </td>

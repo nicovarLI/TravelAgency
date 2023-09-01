@@ -19,7 +19,7 @@
             {{$flight->arrival_time}}
         </td>
         <td>
-            <button @click="show = true; loadFlightSelects('{{$flight->airline->id}}','{{$flight->originCity->id}}','{{$flight->destinationCity->id}}'); flightId = '{{$flight->id}}'; departureTime = '{{$flight->departure_time}}'; arrivalTime = '{{$flight->arrival_time}}';" class="text-xs bg-blue-400 text-white hover:bg-white action:bg-red-500r hover:text-blue-500 p-2 px-4 rounded-full">
+            <button @click="show = true; loadFlightSelects('{{$flight->airline->id}}' ,'{{$flight->originCity->id}}','{{$flight->destinationCity->id}}'); flightId = '{{$flight->id}}'; departureTime = '{{$flight->departure_time}}'; arrivalTime = '{{$flight->arrival_time}}';" class="text-xs bg-blue-400 text-white hover:bg-white action:bg-red-500r hover:text-blue-500 p-2 px-4 rounded-full">
                 Edit
             </button>
         </td>
