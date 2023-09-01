@@ -66,15 +66,17 @@ $(document).ready(function () {
         minimumResultsForSearch: Infinity,
     });
     $("#airline-select").on("select2:select", function (e) {
-        handleAirlineSelection(e.params.data.id, "#origin-select", "#destination-select");
+        handleAirlineSelection(e.params.data.id, "#origin-select", "#destination-select", null);
     });
     $("#origin-select").select2({
         minimumResultsForSearch: Infinity,
         disabled: true,
+        placeholder: 'Select a origin'
     });
     $("#destination-select").select2({
         minimumResultsForSearch: Infinity,
         disabled: true,
+        placeholder: 'Select a destination'
     });
     $("#edit-origin-select").select2({
         minimumResultsForSearch: Infinity,
@@ -83,6 +85,8 @@ $(document).ready(function () {
         minimumResultsForSearch: Infinity,
     });
 });
+
+let selectedCities = [];
 
 const loadFlightSelects = (airlineId, originId, destinationId) => {
     handleAirlineSelection(airlineId, "#edit-origin-select", "#edit-destination-select", function() {
@@ -99,7 +103,7 @@ const handleAirlineSelection = (airlineId, origin, destination, callback) => {
         url: `api/airlines/${airlineId}/cities`,
         dataType: "json",
         success: function (data) {
-            let cities = $.map(data, function (item) {
+            const cities = $.map(data, function (item) {
                 return {
                     id: item.id,
                     text: item.name,
@@ -111,16 +115,44 @@ const handleAirlineSelection = (airlineId, origin, destination, callback) => {
 };
 
 const populateCitySelects = (cities, origin, destination, callback) => {
-    $(`${origin}`).empty();
-    $(`${destination}`).empty();
+     $(`${origin}`).empty();
+     $(`${destination}`).empty();
+    cities.unshift({id: ''});
     $(`${origin}`).select2({
         data: cities,
+        placeholder: 'Select an origin'
     });
     $(`${destination}`).select2({
         data: cities,
+        placeholder: 'Select a destination'
     });
-    callback();
+    if(callback){
+        callback();
+    }
+
 };
+
+$("#origin-select").on('select2:select', function (e) {
+    $("#destination-select > option").each(function() {
+        $(this).prop('disabled', false);
+    });
+    $(`#destination-select option[value='${e.params.data.id}']`).prop('disabled', true);
+});
+
+$("#destination-select").on('select2:select', function (e) {
+    $("#origin-select > option").each(function() {
+        $(this).prop('disabled', false);
+    });
+    $(`#origin-select option[value='${e.params.data.id}']`).prop('disabled', true);
+});
+
+$("#origin-select").on('select2:unselect', function (e) {
+    $(`#destination-select option[value='${e.params.data.id}']`).prop('disabled', false);
+});
+
+$("#destination-select").on('select2:unselect', function (e) {
+    $(`#origin-select option[value='${e.params.data.id}']`).prop('disabled', false);
+});
 
 const loadTable = () => {
     axios(apiURL, { params: { page: currentPage() } })
