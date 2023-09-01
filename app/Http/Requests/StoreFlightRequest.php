@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class StoreFlightRequest extends FormRequest
 {
@@ -16,7 +17,7 @@ class StoreFlightRequest extends FormRequest
         return [
             'airline_id' => ['required', 'integer'],
             'origin_city_id' => ['required', 'integer'],
-            'destination_city_id' => ['required', 'integer'],
+            'destination_city_id' => ['required', 'integer', Rule::notIn([$this->input('origin_city_id')])],
             'departure_time' => ['required'],
             'arrival_time' => ['required'],
         ];
