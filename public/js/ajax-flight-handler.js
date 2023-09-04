@@ -14,10 +14,15 @@ const createFlight = () => {
         })
         .then(function (response) {
             document.forms["add-flight-form"].reset();
+            $("#airline-select").val('').trigger("change");
+            $("#origin-select").val('').trigger("change");
+            $("#destination-select").val('').trigger("change");
             loadTable();
+            showToast("Flight created successfully", "success", 5);
         })
         .catch(function (error) {
             console.log(error);
+            showToast(error.response.data.message, "error", 5);
         });
 };
 
@@ -26,9 +31,10 @@ const deleteFlight = (flightId) => {
         .delete(`${apiURL}/${flightId}`)
         .then(function (response) {
             loadTable();
+            showToast("Flight deleted successfully", "success", 5);
         })
         .catch(function (error) {
-            console.log(error);
+            showToast(error.response.data.message, "error", 5);
         });
 };
 
@@ -40,9 +46,10 @@ const updateFlight = (flightId) => {
         })
         .then(function (response) {
             loadTable();
+            showToast("Flight updated successfully", "success", 5);
         })
         .catch(function (error) {
-            console.log(error);
+            showToast(error.response.data.message, "error", 5);
         });
 };
 
@@ -156,7 +163,6 @@ const populateCitySelects = (cities, origin, destination, callback) => {
 
 
 $("#origin-select").on("select2:select", function (e) {
-    console.log(e.params);
     disableSelection("#destination-select", e.params.data.id);
 });
 
@@ -169,7 +175,6 @@ $("#edit-origin-select").on("select2:select", function (e) {
 });
 
 $("#edit-destination-select").on("select2:select", function (e) {
-    console.log(e.params);
     disableSelection("#edit-origin-select", e.params.data.id);
 });
 
@@ -199,6 +204,36 @@ const disableSelection = (select, value) => {
 const enableOnUnselect = (select, value) => {
     $(`${select} option[value='${value}']`).prop("disabled", false);
 };
+
+function showToast(message, status, duration) {
+    const toastContainer = document.getElementById("toast-container");
+    const toast = document.createElement("div");
+    const toastBody = document.createElement("div");
+
+    toastSetup(toast, toastBody, status, duration, message);
+    toastContainer.appendChild(toast);
+    $(toast).toast('show');
+
+    $(toast).on('hidden.bs.toast', function () {
+        toast.remove();
+    });
+}
+
+const toastSetup = (toast, toastBody, status, duration, message) => {
+    if (status === "success") {
+        toastBody.style.background = "#68d391";
+    } else if (status === "error") {
+        toastBody.style.background = "#e53e3e";
+    }
+    $(toast).toast({delay: duration * 1000});
+    toast.className = "toast";
+    toast.style.width = "300px";
+    toast.style.borderRadius = "8px";
+    toastBody.className = "toast-body";
+    toastBody.style.color = "#fff";
+    toastBody.innerHTML = message;
+    toast.appendChild(toastBody);
+}
 
 const loadTable = () => {
     axios(apiURL, { params: { page: currentPage() } })
