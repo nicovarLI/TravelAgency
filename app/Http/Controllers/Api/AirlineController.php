@@ -5,14 +5,9 @@ namespace App\Http\Controllers\Api;
 use App\Http\Requests\StoreAirlineRequest;
 use App\Http\Requests\UpdateAirlineRequest;
 use App\Models\Airline;
-use App\Models\City;
-use Hamcrest\Arrays\IsArray;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Js;
-
-use function PHPUnit\Framework\isEmpty;
 
 class AirlineController
 {
@@ -24,9 +19,8 @@ class AirlineController
     public function store(StoreAirlineRequest $request): JsonResponse
     {
         $airline = Airline::create($request->validated());
-        $cityIds = explode(',', $request->string('cityIds'));
 
-        $airline->cities()->attach($cityIds);
+        $airline->cities()->attach($request->string('cityIds')->explode(','));
 
         return response()->json([
             'message' => 'Airline stored.',
@@ -37,10 +31,10 @@ class AirlineController
     public function update(UpdateAirlineRequest $request, Airline $airline): JsonResponse
     {
         $airline->update($request->validated());
-        $cityIds = $request->string('cityIds')->toString();
+        $cityIds = $request->string('cityIds');
 
-        if(!empty($cityIds)){
-            $airline->cities()->syncWithoutDetaching(explode(',', $cityIds));
+        if($cityIds->isNotEmpty()){
+            $airline->cities()->syncWithoutDetaching($cityIds->explode(','));
         }
 
         return response()->json([
