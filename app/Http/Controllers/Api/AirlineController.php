@@ -55,7 +55,7 @@ class AirlineController
 
     public function destroyCities(Request $request, Airline $airline): JsonResponse
     {
-        $airline->cities()->detach($request->cityIds);
+        $airline->cities()->detach($request->collect('cityIds'));
 
         return response()->json([
             'message' => 'City-airline relationships deleted successfully',
