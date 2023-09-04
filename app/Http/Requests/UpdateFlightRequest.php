@@ -18,8 +18,8 @@ class UpdateFlightRequest extends FormRequest
             'airline_id' => ['required', 'integer'],
             'origin_city_id' => ['required', 'integer'],
             'destination_city_id' => ['required', 'integer', Rule::notIn([$this->input('origin_city_id')])],
-            'departure_time' => ['required'],
-            'arrival_time' => ['required'],
+            'departure_at' => ['required', 'date'],
+            'arrival_at' => ['required', 'date', 'after:departure_at'],
         ];
     }
 }

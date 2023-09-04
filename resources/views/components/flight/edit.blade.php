@@ -8,14 +8,14 @@
         <select class="mx-auto w-full" style="width: 100%" id="edit-origin-select" name="origin_city_id" required></select>
         <span class="text-md pl-3 text-gray-500">Destination</span>
         <select class="mx-auto w-full" style="width: 100%" id="edit-destination-select" name="destination_city_id" required></select>
-        <label class="block text-md pl-3 text-gray-500 mb-2" for="departure_time">
+        <label class="block text-md pl-3 text-gray-500 mb-2" for="departure_at">
             Departure time
         </label>
-        <input type="datetime-local" x-model="departureTime" x-text="departureTime" id="departure-date" class="px-2 border-gray-400 mb-2 border" name="departure_time" required>
-        <label class="block mb-2 text-md pl-3 text-gray-500" for="arrival_time" >
+        <input type="datetime-local" x-model="departureTime" x-text="departureTime" id="departure-date" class="px-2 border-gray-400 mb-2 border" name="departure_at" required>
+        <label class="block mb-2 text-md pl-3 text-gray-500" for="arrival_at" >
             Arrival time
         </label>
-        <input type="datetime-local" x-model="arrivalTime" x-text="arrivalTime" id="arrival-date" class="px-2 border-gray-400 mb-2 border" name="arrival_time" required>
+        <input type="datetime-local" x-model="arrivalTime" x-text="arrivalTime" id="arrival-date" class="px-2 border-gray-400 mb-2 border" name="arrival_at" required>
     </div>
     <x-form.buttons :back-attributes="['@click' => 'show = !show']" :submit-attributes="['@click' => 'updateFlight(flightId)']"/>
 </form>

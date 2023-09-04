@@ -21,14 +21,14 @@
                 <select class="w-full" id="destination-select" name="destination_city_id">
                     <option value="">Select a destination</option>
                 </select>
-                <label class="block mb-2 mt-2 uppercase font-bold text-xs text-gray-700" for="departure_time">
+                <label class="block mb-2 mt-2 uppercase font-bold text-xs text-gray-700" for="departure_at">
                     Departure time
                 </label>
-                <input type="datetime-local" id="departure-date" class="px-2 border-gray-400 mb-2 border" name="departure_time" required>
-                <label class="block mb-2 uppercase font-bold text-xs text-gray-700" for="arrival_time" >
+                <input type="datetime-local" id="departure-date" class="px-2 border-gray-400 mb-2 border" name="departure_at" required>
+                <label class="block mb-2 uppercase font-bold text-xs text-gray-700" for="arrival_at" >
                     Arrival time
                 </label>
-                <input type="datetime-local" id="arrival-date" class="px-2 border-gray-400 mb-2 border" name="arrival_time" required>
+                <input type="datetime-local" id="arrival-date" class="px-2 border-gray-400 mb-2 border" name="arrival_at" required>
             </div>
             <div class="mb-6 flex justify-center">
                 <button onclick="createFlight()" type="submit" class="bg-blue-400 text-white hover:bg-white action:bg-red-500r hover:text-blue-500 rounded-full py-2 px-4">

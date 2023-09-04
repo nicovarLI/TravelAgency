@@ -227,7 +227,7 @@ const renderTable = (flights) => {
     let tableBody = "";
     if (flights.length > 0) {
         flights.forEach(
-            ({id, origin_city, destination_city, airline, departure_time, arrival_time}) => {
+            ({id, origin_city, destination_city, airline, departure_at, arrival_at}) => {
                 tableBody += `
                 <tr class="hover:bg-gray-300" data-id="${id}">
                     <td class="py-3">
@@ -243,13 +243,13 @@ const renderTable = (flights) => {
                         <p class="text-sm text-gray-900">${airline.name}</p>
                     </td>
                     <td class="py-3">
-                        ${departure_time}
+                        ${departure_at}
                     </td>
                     <td class="py-3">
-                        ${arrival_time}
+                        ${arrival_at}
                     </td>
                     <td>
-                        <button @click="show = true; loadFlightSelects(${airline.id},${origin_city.id},${destination_city.id}) ; flightId = '${id}'; departureTime = '${departure_time}'; arrivalTime = '${arrival_time}'" class="text-xs bg-blue-400 text-white hover:bg-white action:bg-red-500r hover:text-blue-500 p-2 px-4 rounded-full">
+                        <button @click="show = true; loadFlightSelects(${airline.id},${origin_city.id},${destination_city.id}) ; flightId = '${id}'; departureTime = '${departure_at}'; arrivalTime = '${arrival_at}'" class="text-xs bg-blue-400 text-white hover:bg-white action:bg-red-500r hover:text-blue-500 p-2 px-4 rounded-full">
                             Edit
                         </button>
                     </td>

@@ -16,8 +16,8 @@ class Flight extends Model
         'origin_city_id',
         'destination_city_id',
         'airline_id',
-        'departure_time',
-        'arrival_time',
+        'departure_at',
+        'arrival_at',
     ];
 
     public function originCity(): BelongsTo
