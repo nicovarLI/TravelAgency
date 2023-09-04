@@ -36,5 +36,7 @@ Route::controller(AirlineController::class)
         Route::prefix('{airline}')->group(static function () {
             Route::put('/', 'update')->name('update');
             Route::delete('/', 'destroy')->name('destroy');
+            Route::get('/cities','getCities')->name('cities');
+            Route::delete('/cities','destroyCities')->name('destroyCities');
         });
     });

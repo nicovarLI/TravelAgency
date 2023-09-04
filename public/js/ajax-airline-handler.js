@@ -12,16 +12,15 @@ const createAirline = () => {
             'X-Requested-With': 'XMLHttpRequest',
             'X-CSRF-TOKEN': getCsrfToken()
         },
-        body: new URLSearchParams($('#add-airline-form').serialize())
+        body: new URLSearchParams($('#add-airline-form').serialize() + '&cityIds=' + $("#city-select").val().join(','))
     })
     .then(response => {
         if (response.ok) {
             $('#name-error').text('');
             $('#description-error').text('');
             document.forms["add-airline-form"].reset();
-
+            $("#city-select").val([]).trigger("change");
             return response.json();
-
         }
         return response.json().then(data => {
             handleValidationErrors(data.errors);
@@ -53,12 +52,30 @@ const updateAirline = (airlineId) => {
             'X-Requested-With': 'XMLHttpRequest',
             'X-CSRF-TOKEN': getCsrfToken()
         },
-        body: new URLSearchParams($('#airlines-update-form').serialize())
+        body: new URLSearchParams($('#airlines-update-form').serialize()+ '&cityIds=' + $("#edit-city-select").val().join(','))
     })
-
     .then(response => response.json())
-    .then(result => loadTable())
+    .then(result =>
+        loadTable(),
+        deleteCityAirline(airlineId, $("#edit-location-select").val()),
+        $("#edit-city-select").val([]).trigger("change")
+    )
     .catch(error => console.error);
+}
+
+const deleteCityAirline = (airlineId, cities) => {
+    fetch(`${baseURL}/${airlineId}/cities`,{
+        method: 'DELETE',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-Requested-With': 'XMLHttpRequest',
+            'X-CSRF-TOKEN': getCsrfToken()
+        },
+        body: JSON.stringify({ cityIds: cities })
+    })
+    .then(response => response.json())
+    .then(result => $("#edit-location-select").val([]).trigger("change"))
+    .catch(error => console.error)
 }
 
 const loadTable = () => {
@@ -71,6 +88,28 @@ const loadTable = () => {
     })
      .catch(error => {console.error('Load table error: ', error);})
 }
+
+$(document).ready(function () {
+    $("#city-select").select2({
+        ajax: {
+            url: "/api/cities",
+            dataType: "json",
+            processResults: function (response) {
+                return {
+                    results: $.map(response.data, function (item) {
+                        return {
+                            id: item.id,
+                            text: item.name,
+                        };
+                    }),
+                };
+            },
+        },
+        placeholder: "Select cities",
+        multiple: true,
+        minimumResultsForSearch: Infinity,
+    });
+});
 
 const renderTable = (airlines) => {
     let tableBody = '';
@@ -91,7 +130,7 @@ const renderTable = (airlines) => {
                         ${flights_count}
                     </td>
                     <td>
-                        <button @click="show = true; airlineName = '${name}'; airlineId = '${id}'; airlineDescription = '${description}';" class="text-xs bg-blue-400 text-white hover:bg-white action:bg-red-500r hover:text-blue-500 p-2 px-4 rounded-full">
+                        <button @click="show = true; airlineName = '${name}'; airlineId = '${id}'; airlineDescription = '${description}';" onclick="loadCitySelect('${id}')" class="text-xs bg-blue-400 text-white hover:bg-white action:bg-red-500r hover:text-blue-500 p-2 px-4 rounded-full">
                             Edit
                         </button>
                     </td>
@@ -116,4 +155,43 @@ const renderTable = (airlines) => {
     return tableBody;
 }
 
-
+const loadCitySelect = (airlineId) => {
+    $("#edit-location-select").select2({
+        ajax: {
+            url: `/api/airlines/${airlineId}/cities`,
+            dataType: "json",
+            processResults: function (response) {
+                return {
+                    results: $.map(response, function (item) {
+                        return {
+                            id: item.id,
+                            text: item.name,
+                        };
+                    }),
+                };
+            },
+        },
+        placeholder: "Select locations",
+        multiple: true,
+        minimumResultsForSearch: Infinity,
+    });
+    $("#edit-city-select").select2({
+        ajax: {
+            url: "/api/cities",
+            dataType: "json",
+            processResults: function (response) {
+                return {
+                    results: $.map(response.data, function (item) {
+                        return {
+                            id: item.id,
+                            text: item.name,
+                        };
+                    }),
+                };
+            },
+        },
+        placeholder: "Select cities",
+        multiple: true,
+        minimumResultsForSearch: Infinity,
+    });
+};

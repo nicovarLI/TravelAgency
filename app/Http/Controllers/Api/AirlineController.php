@@ -18,7 +18,9 @@ class AirlineController
 
     public function store(StoreAirlineRequest $request): JsonResponse
     {
-        Airline::create($request->validated());
+        $airline = Airline::create($request->validated());
+
+        $airline->cities()->attach($request->string('cityIds')->explode(','));
 
         return response()->json([
             'message' => 'Airline stored.',
@@ -29,6 +31,11 @@ class AirlineController
     public function update(UpdateAirlineRequest $request, Airline $airline): JsonResponse
     {
         $airline->update($request->validated());
+        $cityIds = $request->string('cityIds');
+
+        if($cityIds->isNotEmpty()){
+            $airline->cities()->syncWithoutDetaching($cityIds->explode(','));
+        }
 
         return response()->json([
             'message' => 'Airline updated.',
@@ -44,5 +51,20 @@ class AirlineController
             'message' => 'Airline deleted.',
             'status' => 'success',
         ]);
+    }
+
+    public function destroyCities(Request $request, Airline $airline): JsonResponse
+    {
+        $airline->cities()->detach($request->collect('cityIds'));
+
+        return response()->json([
+            'message' => 'City-airline relationships deleted successfully',
+            'status' => 'success',
+        ]);
+    }
+
+    public function getCities(Airline $airline): JsonResponse
+    {
+        return response()->json($airline->cities);
     }
 }

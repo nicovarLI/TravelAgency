@@ -18,6 +18,10 @@
                 <span id="name-error" class="text-red-500 text-xs mt-1"></span>
                 <span id="description-error" class="text-red-500 text-xs mt-1"></span>
 
+                <label class="block mt-2 mb-2 uppercase font-bold text-xs text-gray-700" >
+                    Cities
+                </label>
+                <select class="w-full" id="city-select" name="city-select"></select>
                 @error('name')
                     <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
                 @enderror
