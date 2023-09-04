@@ -14,28 +14,31 @@ const createFlight = () => {
         })
         .then(function (response) {
             document.forms["add-flight-form"].reset();
-            $("#airline-select").val('').trigger("change");
-            $("#origin-select").val('').trigger("change");
-            $("#destination-select").val('').trigger("change");
+            $("#airline-select").val("").trigger("change");
+            $("#origin-select").val("").trigger("change");
+            $("#destination-select").val("").trigger("change");
             loadTable();
             showToast("Flight created successfully", "success", 5);
         })
         .catch(function (error) {
-            console.log(error);
             showToast(error.response.data.message, "error", 5);
         });
 };
 
 const deleteFlight = (flightId) => {
-    axios
-        .delete(`${apiURL}/${flightId}`)
-        .then(function (response) {
-            loadTable();
-            showToast("Flight deleted successfully", "success", 5);
-        })
-        .catch(function (error) {
-            showToast(error.response.data.message, "error", 5);
-        });
+    if (confirm("Are you sure you want to delete this?")) {
+        axios
+            .delete(`${apiURL}/${flightId}`)
+            .then(function (response) {
+                loadTable();
+                showToast("Flight deleted successfully", "success", 5);
+            })
+            .catch(function (error) {
+                showToast(error.response.data.message, "error", 5);
+            });
+    } else {
+        showToast("Deletion aborted", "info", 5);
+    }
 };
 
 const updateFlight = (flightId) => {
@@ -54,20 +57,18 @@ const updateFlight = (flightId) => {
 };
 
 $(document).ready(function () {
-    axios
-        .get("/api/airlines")
-        .then(function (response) {
-            const airlines = $.map(response.data.data, function (item) {
-                return {
-                    id: item.id,
-                    text: item.name,
-                };
-            });
-            $('#airline-select, #edit-airline-select').select2({
-                data: airlines,
-                placeholder: "Select an airline",
-            });
+    axios.get("/api/airlines").then(function (response) {
+        const airlines = $.map(response.data.data, function (item) {
+            return {
+                id: item.id,
+                text: item.name,
+            };
         });
+        $("#airline-select, #edit-airline-select").select2({
+            data: airlines,
+            placeholder: "Select an airline",
+        });
+    });
 
     $("#airline-select, #edit-airline-select").select2({
         minimumResultsForSearch: Infinity,
@@ -102,26 +103,22 @@ $(document).ready(function () {
 });
 
 const loadFlightSelects = (airlineId, originId, destinationId) => {
-    handleAirlineSelection( airlineId, "#edit-origin-select", "#edit-destination-select", function () {
+    handleAirlineSelection(
+        airlineId,
+        "#edit-origin-select",
+        "#edit-destination-select",
+        function () {
             $("#edit-airline-select").val(airlineId).trigger("change");
             $("#edit-origin-select").val(originId).trigger("change");
             $("#edit-destination-select").val(destinationId).trigger("change");
             $("#edit-destination-select").val(destinationId).trigger({
-                type : 'select2:select',
-                params : {
-                    data: {
-                        id : destinationId
-                    }
-                }
-            });
+                    type: "select2:select",
+                    params: {data: {id: destinationId}}
+                });
             $("#edit-origin-select").val(originId).trigger({
-                type : 'select2:select',
-                params : {
-                    data: {
-                        id : originId
-                    }
-                }
-            });
+                    type: "select2:select",
+                    params: {data: {id: originId}}
+                });
         }
     );
 };
@@ -160,7 +157,6 @@ const populateCitySelects = (cities, origin, destination, callback) => {
         callback();
     }
 };
-
 
 $("#origin-select").on("select2:select", function (e) {
     disableSelection("#destination-select", e.params.data.id);
@@ -205,35 +201,16 @@ const enableOnUnselect = (select, value) => {
     $(`${select} option[value='${value}']`).prop("disabled", false);
 };
 
-function showToast(message, status, duration) {
-    const toastContainer = document.getElementById("toast-container");
-    const toast = document.createElement("div");
-    const toastBody = document.createElement("div");
+const showToast = (message, type, durationInSeconds) => {
+    const toast = document.getElementById("toast");
+    const toastMessage = document.getElementById("toast-message");
 
-    toastSetup(toast, toastBody, status, duration, message);
-    toastContainer.appendChild(toast);
-    $(toast).toast('show');
+    toastMessage.textContent = message;
+    toast.className = `p-4 rounded-md shadow-lg ${ type === "success" ? "bg-green-500" : "bg-red-500" } text-white`;
+    toast.style.display = "block";
 
-    $(toast).on('hidden.bs.toast', function () {
-        toast.remove();
-    });
-}
-
-const toastSetup = (toast, toastBody, status, duration, message) => {
-    if (status === "success") {
-        toastBody.style.background = "#68d391";
-    } else if (status === "error") {
-        toastBody.style.background = "#e53e3e";
-    }
-    $(toast).toast({delay: duration * 1000});
-    toast.className = "toast";
-    toast.style.width = "300px";
-    toast.style.borderRadius = "8px";
-    toastBody.className = "toast-body";
-    toastBody.style.color = "#fff";
-    toastBody.innerHTML = message;
-    toast.appendChild(toastBody);
-}
+    setTimeout(() => { toast.style.display = "none"; }, durationInSeconds * 1000);
+};
 
 const loadTable = () => {
     axios(apiURL, { params: { page: currentPage() } })
@@ -250,14 +227,7 @@ const renderTable = (flights) => {
     let tableBody = "";
     if (flights.length > 0) {
         flights.forEach(
-            ({
-                id,
-                origin_city,
-                destination_city,
-                airline,
-                departure_time,
-                arrival_time,
-            }) => {
+            ({id, origin_city, destination_city, airline, departure_time, arrival_time}) => {
                 tableBody += `
                 <tr class="hover:bg-gray-300" data-id="${id}">
                     <td class="py-3">
