@@ -103,10 +103,7 @@ $(document).ready(function () {
 });
 
 const loadFlightSelects = (airlineId, originId, destinationId) => {
-    handleAirlineSelection(
-        airlineId,
-        "#edit-origin-select",
-        "#edit-destination-select",
+    handleAirlineSelection( airlineId, "#edit-origin-select", "#edit-destination-select",
         function () {
             $("#edit-airline-select").val(airlineId).trigger("change");
             $("#edit-origin-select").val(originId).trigger("change");
@@ -126,19 +123,15 @@ const loadFlightSelects = (airlineId, originId, destinationId) => {
 const handleAirlineSelection = (airlineId, origin, destination, callback) => {
     $(`${origin}, ${destination}`).prop("disabled", false);
 
-    $.ajax({
-        url: `api/airlines/${airlineId}/cities`,
-        dataType: "json",
-        success: function (data) {
-            const cities = $.map(data, function (item) {
-                return {
-                    id: item.id,
-                    text: item.name,
-                };
-            });
-            populateCitySelects(cities, origin, destination, callback);
-        },
-    });
+    axios.get(`api/airlines/${airlineId}/cities`).then(function (response) {
+        const cities = $.map(response.data, function (item) {
+            return {
+                id: item.id,
+                text: item.name,
+            };
+        });
+        populateCitySelects(cities, origin, destination, callback);
+    })
 };
 
 const populateCitySelects = (cities, origin, destination, callback) => {

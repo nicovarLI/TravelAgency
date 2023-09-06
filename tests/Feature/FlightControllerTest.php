@@ -7,6 +7,8 @@ use App\Models\City;
 use App\Models\Flight;
 use Database\Seeders\AirlineSeeder;
 use Database\Seeders\CitySeeder;
+use Database\Seeders\DatabaseSeeder;
+use Database\Seeders\FlightSeeder;
 use DateTime;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use PHPUnit\Framework\Attributes\DataProvider;
@@ -23,11 +25,11 @@ class FlightControllerTest extends TestCase
     {
         parent::setUp();
 
-        $this->seed([CitySeeder::class, AirlineSeeder::class]);
+        $this->seed([DatabaseSeeder::class]);
     }
 
     /** @test */
-    public function it_should_return_a_list_of_flights()
+    public function it_should_return_a_list_of_flights(): void
     {
         $response = $this->get($this->baseUrl);
 
@@ -46,29 +48,52 @@ class FlightControllerTest extends TestCase
         ]);
     }
 
-        /** @test */
-        public function it_should_return_the_remaining_flights_for_the_pagination()
-        {
-            //TODO FIJARME LA ESTRUCTURA DEL PAGINATOR PARA VERIFICAR EL TAMAÑO DE LA PAGINA Y LA CANTIDAD DE DATOS
-            $response = $this->get($this->baseUrl);
+    /** @test */
+    public function it_should_return_a_list_of_flights_paginated_and_include_pagination_data(): void
+    {
+        $response = $this->get("{$this->baseUrl}?page=2");
 
-            $response->assertStatus(200);
-            $response->assertJsonStructure([
-                'data' => [
-                    '*' => [
-                        'id',
-                        'airline',
-                        'origin_city',
-                        'destination_city',
-                        'departure_at',
-                        'arrival_at'
-                    ],
+        $response->assertStatus(200);
+        $response->assertJsonStructure([
+            'data' => [
+                '*' => [
+                    'id',
+                    'airline',
+                    'origin_city',
+                    'destination_city',
+                    'departure_at',
+                    'arrival_at'
                 ],
-            ]);
-        }
+            ],
+            'current_page',
+            'from',
+            'last_page',
+            'path',
+            'per_page',
+            'to',
+            'total',
+        ]);
+        $response->assertJson([
+            'current_page' => 2,
+            'per_page' => 10,
+            'total' => 20,
+        ]);
+    }
 
     /** @test */
-    public function it_should_store_a_new_flight()
+    public function it_should_return_an_empty_list_of_flights_when_database_is_empty(): void
+    {
+        Flight::truncate();
+
+        $response = $this->get($this->baseUrl);
+
+        $response->assertStatus(200);
+        $response->assertJson(['data' => []]);
+        $response->assertJson(['total' => 0]);
+    }
+
+    /** @test */
+    public function it_should_store_a_new_flight(): void
     {
         $flightData = Flight::factory()->make([
             'departure_at' => '2023-09-10',
@@ -89,17 +114,17 @@ class FlightControllerTest extends TestCase
      * @test
      * @dataProvider invalidData
      */
-    public function it_should_return_validation_errors_for_invalid_data_when_storing(array $provider)
+    public function it_should_return_validation_errors_for_invalid_data_when_storing(array $provider): void
     {
         $data = $provider['data'];
-        $response = $this->postJson('/api/flights', $data);
+        $response = $this->postJson($this->baseUrl, $data);
 
         $response->assertStatus(JsonResponse::HTTP_UNPROCESSABLE_ENTITY);
         $response->assertJsonValidationErrors($provider['errors']);
     }
 
     /** @test */
-    public function it_should_update_an_existing_flight()
+    public function it_should_update_an_existing_flight(): void
     {
         $airline = Airline::factory()->create();
         $origin = City::factory()->create();
@@ -127,7 +152,7 @@ class FlightControllerTest extends TestCase
      * @test
      * @dataProvider invalidData
      */
-    public function it_should_return_validation_errors_for_invalid_data_when_updating(array $provider)
+    public function it_should_return_validation_errors_for_invalid_data_when_updating(array $provider): void
     {
         $flight = Flight::factory()->create();
 
@@ -139,7 +164,7 @@ class FlightControllerTest extends TestCase
     }
 
     /** @test */
-    public function it_should_delete_an_existing_flight()
+    public function it_should_delete_an_existing_flight(): void
     {
         $flight = Flight::factory()->create();
 
@@ -154,7 +179,7 @@ class FlightControllerTest extends TestCase
     }
 
     /** @test */
-    public function it_should_return_not_found()
+    public function it_should_return_not_found_when_deleting_invalid_id(): void
     {
         $response = $this->delete("{$this->baseUrl}/invalid");
 
