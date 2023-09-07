@@ -20,4 +20,4 @@ Route::get('/cities', [CityController::class, 'index'])->name('cities.index');
 Route::get('/airlines', [AirlineController::class, 'index'])->name('airlines.index');
 Route::get('/', [FlightController::class, 'index'])->name('flights.index');
 
-//Route::redirect('{unknown}', '/flights')->where('unknown', '(.*)');
+Route::redirect('{unknown}', '/')->where('unknown', '(.*)');

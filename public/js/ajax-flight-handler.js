@@ -45,7 +45,6 @@ const updateFlight = (flightId) => {
     axios
         .put(`${apiURL}/${flightId}`, $("#flight-update-form").serialize(), {
             headers: { "content-type": "application/x-www-form-urlencoded" },
-            data: $("#update-flight-form").serialize(),
         })
         .then(function (response) {
             loadTable();
