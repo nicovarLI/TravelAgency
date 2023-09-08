@@ -69,7 +69,7 @@ const loadTable = () => {
         success:function(response)
         {
             $('#table-body').html(renderTable(response.data))
-            $('#pagination-links').html(getLinks(response, '/api/cities'));
+            $('#pagination-links').html(getLinks(response, '/api/cities', '/cities'));
         },
         error: function(xhr) {
             let errors = xhr.responseJSON.errors;

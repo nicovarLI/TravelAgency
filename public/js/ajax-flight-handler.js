@@ -208,7 +208,8 @@ const loadTable = () => {
     axios(apiURL, { params: { page: currentPage() } })
         .then(function (response) {
             $("#table-body").html(renderTable(response.data.data));
-            $("#pagination-links").html(getLinks(response.data, apiURL));
+            console.log(response.data);
+            $("#pagination-links").html(getLinks(response.data, apiURL, '/flights'));
         })
         .catch(function (error) {
             console.log(error);

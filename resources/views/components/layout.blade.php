@@ -22,14 +22,20 @@
     html {
         scroll-behavior: smooth;
     }
-    </style>
+</style>
 
 <body style="font-family: Open Sans, sans-serif">
-    <section class="px-6 py-8">
+    <section class="px-3 py-4">
         <nav class="md:flex md:justify-between md:items-center">
-            <div>
-                <a href="/">
-                    <img src="" alt="Travel Agency" width="165" height="16">
+            <div class="px-10 flex flex-1 justify-around">
+                <a href="/flights">
+                    <img src="/images/airplane.svg" alt="Flights" width="50" height="5">
+                </a>
+                <a href="/cities">
+                    <img src="/images/city.svg" alt="Cities" width="50" height="5">
+                </a>
+                <a href="/airlines">
+                    <img src="/images/airline.svg" alt="Airlines" width="50" height="5">
                 </a>
             </div>
         </nav>

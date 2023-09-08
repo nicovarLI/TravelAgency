@@ -83,7 +83,7 @@ const loadTable = () => {
     .then(response => response.json())
     .then(result => {
         $('#table-body').html(renderTable(result.data))
-        $('#pagination-links').html(getLinks(result, '/api/airlines'));
+        $('#pagination-links').html(getLinks(result, '/api/airlines', '/airlines'));
     })
      .catch(error => {console.error('Load table error: ', error);})
 }
