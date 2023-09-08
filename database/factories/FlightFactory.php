@@ -18,12 +18,23 @@ class FlightFactory extends Factory
      */
     public function definition(): array
     {
+        $airline = Airline::inRandomOrder()->firstOrFail();
+        $cities = $airline->cities;
+
+        $originCity = $cities->random();
+        do {
+            $destinationCity = $cities->random();
+        } while ($originCity->id === $destinationCity->id);
+
+        $departureTime = fake()->dateTime();
+        $arrivalTime = fake()->dateTimeBetween($departureTime, '+8 hours');
+
         return [
-            'origin_city_id' => City::factory(),
-            'destination_city_id' => City::factory(),
-            'airline_id'=> Airline::factory(),
-            'departure_at' => fake()->dateTime(),
-            'arrival_at' => fake()->dateTime(),
+            'origin_city_id' => $originCity->id,
+            'destination_city_id' => $destinationCity->id,
+            'airline_id'=> $airline->id,
+            'departure_at' => $departureTime,
+            'arrival_at' => $arrivalTime,
         ];
     }
 }

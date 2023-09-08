@@ -91,11 +91,11 @@ const loadTable = () => {
 $(document).ready(function () {
     $("#city-select").select2({
         ajax: {
-            url: "/api/cities",
+            url: "/api/cities/all",
             dataType: "json",
             processResults: function (response) {
                 return {
-                    results: $.map(response.data, function (item) {
+                    results: $.map(response, function (item) {
                         return {
                             id: item.id,
                             text: item.name,
@@ -176,11 +176,11 @@ const loadCitySelect = (airlineId) => {
     });
     $("#edit-city-select").select2({
         ajax: {
-            url: "/api/cities",
+            url: "/api/cities/all",
             dataType: "json",
             processResults: function (response) {
                 return {
-                    results: $.map(response.data, function (item) {
+                    results: $.map(response, function (item) {
                         return {
                             id: item.id,
                             text: item.name,

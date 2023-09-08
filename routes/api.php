@@ -21,6 +21,7 @@ Route::controller(CityController::class)
     ->name('cities.')
     ->group(static function () {
         Route::get('/', 'index')->name('index');
+        Route::get('/all', 'getAll')->name('all');
         Route::post('/', 'store')->name('store');
         Route::prefix('{city}')->group(static function () {
             Route::put('/', 'update')->name('update');
@@ -33,6 +34,7 @@ Route::controller(AirlineController::class)
     ->name('airlines.')
     ->group(static function () {
         Route::get('/', 'index')->name('index');
+        Route::get('/all', 'getAll')->name('all');
         Route::post('/', 'store')->name('store');
         Route::prefix('{airline}')->group(static function () {
             Route::put('/', 'update')->name('update');
@@ -47,6 +49,7 @@ Route::controller(FlightController::class)
     ->name('flights.')
     ->group(static function () {
         Route::get('/', 'index')->name('index');
+        Route::get('/all', 'getAll')->name('all');
         Route::post('/', 'store')->name('store');
         Route::prefix('{flight}')->group(static function () {
             Route::put('/', 'update')->name('update');

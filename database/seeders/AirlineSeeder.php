@@ -13,6 +13,6 @@ class AirlineSeeder extends Seeder
      */
     public function run(): void
     {
-        Airline::factory(20)->create();
+        $airlines = Airline::factory()->count(20)->hasCities(2)->create();
     }
 }

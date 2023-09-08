@@ -56,8 +56,8 @@ const updateFlight = (flightId) => {
 };
 
 $(document).ready(function () {
-    axios.get("/api/airlines").then(function (response) {
-        const airlines = $.map(response.data.data, function (item) {
+    axios.get("/api/airlines/all").then(function (response) {
+        const airlines = $.map(response.data, function (item) {
             return {
                 id: item.id,
                 text: item.name,
