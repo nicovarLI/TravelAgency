@@ -12,7 +12,11 @@ class FlightController
 {
     public function index(): LengthAwarePaginator
     {
-        return Flight::with(['OriginCity:id,name', 'DestinationCity:id,name', 'Airline:id,name'])->paginate(10);
+        return Flight::with([
+            'originCity:id,name',
+            'destinationCity:id,name',
+            'airline:id,name'
+            ])->paginate(10);
     }
 
     public function store(StoreFlightRequest $request): JsonResponse

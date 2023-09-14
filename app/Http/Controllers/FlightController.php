@@ -10,7 +10,11 @@ class FlightController extends Controller
     public function index(): View
     {
         return view('flights', [
-            'flights' => Flight::with(['OriginCity:id,name', 'DestinationCity:id,name', 'Airline:id,name'])->paginate(10)
+            'flights' => Flight::with([
+                'originCity:id,name',
+                'destinationCity:id,name',
+                'airline:id,name'
+                ])->paginate(10)
         ]);
     }
 }
