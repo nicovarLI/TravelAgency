@@ -2,82 +2,79 @@
 
 namespace Tests\Feature;
 
-use App\Models\Airline;
-use App\Models\City;
 use App\Models\Flight;
-use Database\Seeders\AirlineSeeder;
-use Database\Seeders\CitySeeder;
-use Database\Seeders\DatabaseSeeder;
-use Database\Seeders\FlightSeeder;
-use DateTime;
+use Database\Factories\AirlineFactory;
+use Database\Factories\CityFactory;
+use Database\Factories\FlightFactory;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use PHPUnit\Framework\Attributes\DataProvider;
-use Illuminate\Http\JsonResponse;
-use Illuminate\Support\Facades\Date;
 use Tests\TestCase;
 
 class FlightControllerTest extends TestCase
 {
     use RefreshDatabase;
+
     private $baseUrl = '/api/flights';
 
     protected function setUp(): void
     {
         parent::setUp();
 
-        $this->seed([DatabaseSeeder::class]);
+        $this->seed();
     }
 
     /** @test */
     public function it_should_return_a_list_of_flights(): void
     {
-        $response = $this->get($this->baseUrl);
-
-        $response->assertStatus(200);
-        $response->assertJsonStructure([
-            'data' => [
-                '*' => [
-                    'id',
-                    'airline',
-                    'origin_city',
-                    'destination_city',
-                    'departure_at',
-                    'arrival_at'
+        $this
+            ->get($this->baseUrl)
+            ->assertSuccessful()
+            ->assertJsonStructure([
+                'data' => [
+                    '*' => [
+                        'id',
+                        'airline',
+                        'origin_city',
+                        'destination_city',
+                        'departure_at',
+                        'arrival_at'
+                    ],
                 ],
-            ],
-        ]);
+            ]);
     }
 
     /** @test */
     public function it_should_return_a_list_of_flights_paginated_and_include_pagination_data(): void
     {
-        $response = $this->get("{$this->baseUrl}?page=2");
-
-        $response->assertStatus(200);
-        $response->assertJsonStructure([
-            'data' => [
-                '*' => [
-                    'id',
-                    'airline',
-                    'origin_city',
-                    'destination_city',
-                    'departure_at',
-                    'arrival_at'
+        $this
+            ->get("{$this->baseUrl}?page=2")
+            ->assertSuccessful()
+            ->assertJsonStructure([
+                'data' => [
+                    '*' => [
+                        'id',
+                        'airline',
+                        'origin_city',
+                        'destination_city',
+                        'departure_at',
+                        'arrival_at'
+                    ],
                 ],
-            ],
-            'current_page',
-            'from',
-            'last_page',
-            'path',
-            'per_page',
-            'to',
-            'total',
-        ]);
-        $response->assertJson([
-            'current_page' => 2,
-            'per_page' => 10,
-            'total' => 20,
-        ]);
+                'current_page',
+                'from',
+                'last_page',
+                'path',
+                'per_page',
+                'to',
+                'total',
+            ])
+            ->assertJson([
+                'current_page' => 2,
+                'per_page' => 10,
+                'from' => 11,
+                'to' => 15,
+                'total' => 15,
+            ]);
     }
 
     /** @test */
@@ -85,29 +82,33 @@ class FlightControllerTest extends TestCase
     {
         Flight::truncate();
 
-        $response = $this->get($this->baseUrl);
-
-        $response->assertStatus(200);
-        $response->assertJson(['data' => []]);
-        $response->assertJson(['total' => 0]);
+        $this
+            ->get($this->baseUrl)
+            ->assertSuccessful()
+            ->assertJson(['data' => []])
+            ->assertJson(['total' => 0]);
     }
 
     /** @test */
     public function it_should_store_a_new_flight(): void
     {
-        $flightData = Flight::factory()->make([
-            'departure_at' => '2023-09-10',
-            'arrival_at' => '2023-09-11',
-        ])->toArray();
+        $flightData = [
+            'airline_id' => 1,
+            'destination_city_id' => 1,
+            'origin_city_id' => 2,
+            'arrival_at' => '2000-02-01T05:02',
+            'departure_at' => '2000-01-01T02:01',
+        ];
 
-        $response = $this->postJson($this->baseUrl, $flightData);
+        $this
+            ->postJson($this->baseUrl, $flightData)
+            ->assertSuccessful()
+            ->assertJson([
+                'message' => 'Flight stored.',
+                'status' => 'success',
+            ]);
 
-        $response->assertStatus(JsonResponse::HTTP_CREATED);
-        $response->assertJson([
-            'message' => 'Flight stored.',
-            'status' => 'success',
-        ]);
-        $this->assertDatabaseHas('flights', $flightData);
+        $this->assertDatabaseHas(Flight::class, $flightData);
     }
 
     /**
@@ -117,35 +118,38 @@ class FlightControllerTest extends TestCase
     public function it_should_return_validation_errors_for_invalid_data_when_storing(array $provider): void
     {
         $data = $provider['data'];
-        $response = $this->postJson($this->baseUrl, $data);
 
-        $response->assertStatus(JsonResponse::HTTP_UNPROCESSABLE_ENTITY);
-        $response->assertJsonValidationErrors($provider['errors']);
+        $this
+            ->postJson($this->baseUrl, $data)
+            ->assertUnprocessable()
+            ->assertJsonValidationErrors($provider['errors']);
     }
 
     /** @test */
     public function it_should_update_an_existing_flight(): void
     {
-        $airline = Airline::factory()->create();
-        $origin = City::factory()->create();
-        $destination = City::factory()->create();
-        $flight = Flight::factory()->create();
+        $airline = AirlineFactory::new()->create();
+        $origin = CityFactory::new()->create();
+        $destination = CityFactory::new()->create();
+        $flight = FlightFactory::new()->create();
 
         $updatedData = [
             'airline_id' => $airline->id,
             'origin_city_id' => $origin->id,
             'destination_city_id' => $destination->id,
-            'arrival_at' => '2000-02-01',
-            'departure_at' => '2000-01-01',
+            'arrival_at' => '2000-02-01T05:02',
+            'departure_at' => '2000-01-01T02:01',
         ];
-        $response = $this->putJson("{$this->baseUrl}/{$flight->id}", $updatedData);
 
-        $response->assertStatus(200);
-        $response->assertJson([
-            'message' => 'Flight updated.',
-            'status' => 'success',
-        ]);
-        $this->assertDatabaseHas('flights', $updatedData);
+        $this
+            ->putJson("{$this->baseUrl}/{$flight->id}", $updatedData)
+            ->assertSuccessful()
+            ->assertJson([
+                'message' => 'Flight updated.',
+                'status' => 'success',
+            ]);
+
+        $this->assertDatabaseHas(Flight::class, $updatedData);
     }
 
     /**
@@ -154,13 +158,12 @@ class FlightControllerTest extends TestCase
      */
     public function it_should_return_validation_errors_for_invalid_data_when_updating(array $provider): void
     {
-        $flight = Flight::factory()->create();
+        $flight = FlightFactory::new()->create();
 
-        $data = $provider['data'];
-        $response = $this->putJson("{$this->baseUrl}/{$flight->id}", $data);
-
-        $response->assertStatus(JsonResponse::HTTP_UNPROCESSABLE_ENTITY);
-        $response->assertJsonValidationErrors($provider['errors']);
+        $this
+            ->putJson("{$this->baseUrl}/{$flight->id}", $provider['data'])
+            ->assertUnprocessable()
+            ->assertJsonValidationErrors($provider['errors']);
     }
 
     /** @test */
@@ -168,22 +171,23 @@ class FlightControllerTest extends TestCase
     {
         $flight = Flight::factory()->create();
 
-        $response = $this->delete("{$this->baseUrl}/{$flight->id}");
+        $this
+            ->delete("{$this->baseUrl}/{$flight->id}")
+            ->assertSuccessful()
+            ->assertJson([
+                'message' => 'Flight deleted.',
+                'status' => 'success',
+            ]);
 
-        $response->assertStatus(200);
-        $response->assertJson([
-            'message' => 'Flight deleted.',
-            'status' => 'success',
-        ]);
-        $this->assertDatabaseMissing('flights', ['id' => $flight->id]);
+        $this->assertDatabaseMissing(Flight::class, ['id' => $flight->id]);
     }
 
     /** @test */
     public function it_should_return_not_found_when_deleting_invalid_id(): void
     {
-        $response = $this->delete("{$this->baseUrl}/invalid");
-
-        $response->assertStatus(404);
+        $this
+            ->delete("{$this->baseUrl}/invalid")
+            ->assertNotFound();
     }
 
     private function invalidData(): array
@@ -193,8 +197,8 @@ class FlightControllerTest extends TestCase
                 'data' => [
                     'origin_city_id' => 1,
                     'destination_city_id' => 2,
-                    'arrival_at' => '2000-02-01',
-                    'departure_at' => '2000-01-01',
+                    'arrival_at' => '2000-02-01T05:02',
+                    'departure_at' => '2000-01-01T02:01',
                 ],
                 'errors' => [
                     'airline_id' => [
@@ -206,8 +210,8 @@ class FlightControllerTest extends TestCase
                 'data' => [
                     'airline_id' => 1,
                     'destination_city_id' => 1,
-                    'arrival_at' => '2000-02-01',
-                    'departure_at' => '2000-01-01',
+                    'arrival_at' => '2000-02-01T05:02',
+                    'departure_at' => '2000-01-01T02:01',
                 ],
                 'errors' => [
                     'origin_city_id' => [
@@ -219,8 +223,8 @@ class FlightControllerTest extends TestCase
                 'data' => [
                     'airline_id' => 1,
                     'origin_city_id' => 1,
-                    'arrival_at' => '2000-02-01',
-                    'departure_at' => '2000-01-01',
+                    'arrival_at' => '2000-02-01T05:02',
+                    'departure_at' => '2000-01-01T02:01',
                 ],
                 'errors' => [
                     'destination_city_id' => [
@@ -233,7 +237,7 @@ class FlightControllerTest extends TestCase
                     'airline_id' => 1,
                     'destination_city_id' => 2,
                     'origin_city_id' => 1,
-                    'departure_at' => '2000-01-01',
+                    'departure_at' => '2000-01-01T02:01',
                 ],
                 'errors' => [
                     'arrival_at' => [
@@ -246,7 +250,7 @@ class FlightControllerTest extends TestCase
                     'airline_id' => 1,
                     'destination_city_id' => 2,
                     'origin_city_id' => 1,
-                    'arrival_at' => '2000-01-01',
+                    'arrival_at' => '2000-02-01T05:02',
                 ],
                 'errors' => [
                     'departure_at' => [
@@ -279,8 +283,8 @@ class FlightControllerTest extends TestCase
                     'airline_id' => 1,
                     'destination_city_id' => 2,
                     'origin_city_id' => 1,
-                    'departure_at' => '2000-02-01',
-                    'arrival_at' => '2000-01-01',
+                    'departure_at' => '2000-02-01T05:02',
+                    'arrival_at' => '2000-01-01T02:01',
                 ],
                 'errors' => [
                     'arrival_at' => [
@@ -307,10 +311,10 @@ class FlightControllerTest extends TestCase
                         'The destination city id field must be an integer.',
                     ],
                     'arrival_at' => [
-                        'The arrival at field must be a valid date.',
+                        'The arrival at field must match the format Y-m-d\\TH:i.',
                     ],
                     'departure_at' => [
-                        'The departure at field must be a valid date.',
+                        'The departure at field must match the format Y-m-d\\TH:i.',
                     ],
                 ],
             ]],
@@ -319,8 +323,8 @@ class FlightControllerTest extends TestCase
                     'airline_id' => 'invalid',
                     'destination_city_id' => 1,
                     'origin_city_id' => 1,
-                    'departure_at' => '2000-02-01',
-                    'arrival_at' => '2000-01-01',
+                    'arrival_at' => '2000-02-01T05:02',
+                    'departure_at' => '2000-01-01T02:01',
                 ],
                 'errors' => [
                     'airline_id' => [
@@ -333,8 +337,8 @@ class FlightControllerTest extends TestCase
                     'airline_id' => 1,
                     'destination_city_id' => 'invalid',
                     'origin_city_id' => 1,
-                    'departure_at' => '2000-02-01',
-                    'arrival_at' => '2000-01-01',
+                    'arrival_at' => '2000-02-01T05:02',
+                    'departure_at' => '2000-01-01T02:01',
                 ],
                 'errors' => [
                     'destination_city_id' => [
@@ -347,8 +351,8 @@ class FlightControllerTest extends TestCase
                     'airline_id' => 1,
                     'destination_city_id' => 2,
                     'origin_city_id' => 'invalid',
-                    'departure_at' => '2000-02-01',
-                    'arrival_at' => '2000-01-01',
+                    'arrival_at' => '2000-02-01T05:02',
+                    'departure_at' => '2000-01-01T02:01',
                 ],
                 'errors' => [
                     'origin_city_id' => [
@@ -361,12 +365,12 @@ class FlightControllerTest extends TestCase
                     'airline_id' => 1,
                     'destination_city_id' => 1,
                     'origin_city_id' => 2,
+                    'arrival_at' => '2000-02-01T05:02',
                     'departure_at' => 'invalid',
-                    'arrival_at' => '2000-01-01',
                 ],
                 'errors' => [
                     'departure_at' => [
-                        'The departure at field must be a valid date'
+                        'The departure at field must match the format Y-m-d\\TH:i.'
                     ]
                 ]
             ]],
@@ -375,8 +379,8 @@ class FlightControllerTest extends TestCase
                     'airline_id' => 1,
                     'destination_city_id' => 1,
                     'origin_city_id' => 2,
-                    'departure_at' => '2000-01-01',
                     'arrival_at' => 'invalid',
+                    'departure_at' => '2000-01-01T02:01',
                 ],
                 'errors' => [
                     'arrival_at' => [
@@ -389,8 +393,8 @@ class FlightControllerTest extends TestCase
                     'airline_id' => 1,
                     'destination_city_id' => 1,
                     'origin_city_id' => 1,
-                    'departure_at' => '2000-01-01',
-                    'arrival_at' => '2000-02-01',
+                    'arrival_at' => '2000-02-01T05:02',
+                    'departure_at' => '2000-01-01T02:01',
                 ],
                 'errors' => [
                     'destination_city_id' => [
