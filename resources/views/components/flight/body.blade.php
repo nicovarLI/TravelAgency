@@ -1,8 +1,7 @@
 @props(['flights'])
 
-@if (empty($flights))
-    <x-empty-table-default/>
-@endif
-@foreach ($flights as $flight)
+@forelse($flights as $flight)
     <x-flight.table-row :flight="$flight" />
-@endforeach
+@empty
+    <x-empty-table-default/>
+@endforelse

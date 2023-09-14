@@ -41,7 +41,7 @@ const getLinks = ({ links, from, to, total, prev_page_url, next_page_url, path, 
     return linksNav;
 }
 
-const customizePaginationLinks = (links,wrongPath,endpoint ) => {
+const customizePaginationLinks = (links, wrongPath, endpoint ) => {
     return links.map(link => {
         if (link.url) {
             link.url = link.url.replace(wrongPath, endpoint);

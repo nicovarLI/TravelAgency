@@ -1,6 +1,6 @@
 <!doctype html>
 
-<title>Travel Agency</title>
+<title>{{ config('app.name') }}</title>
 
 <link rel="preconnect" href="https://fonts.gstatic.com">
 <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.12.3/dist/cdn.min.js"></script>

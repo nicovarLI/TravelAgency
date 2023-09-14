@@ -18,7 +18,7 @@ const createFlight = () => {
             $("#origin-select").val("").trigger("change");
             $("#destination-select").val("").trigger("change");
             loadTable();
-            showToast("Flight created successfully", "success", 5);
+            showToast(response.data.message, response.data.status, 5);
         })
         .catch(function (error) {
             showToast(error.response.data.message, "error", 5);
@@ -31,7 +31,7 @@ const deleteFlight = (flightId) => {
             .delete(`${apiURL}/${flightId}`)
             .then(function (response) {
                 loadTable();
-                showToast("Flight deleted successfully", "success", 5);
+                showToast(response.data.message, response.data.status, 5);
             })
             .catch(function (error) {
                 showToast(error.response.data.message, "error", 5);
@@ -48,7 +48,7 @@ const updateFlight = (flightId) => {
         })
         .then(function (response) {
             loadTable();
-            showToast("Flight updated successfully", "success", 5);
+            showToast(response.data.message, response.data.status, 5);
         })
         .catch(function (error) {
             showToast(error.response.data.message, "error", 5);
@@ -101,7 +101,12 @@ $(document).ready(function () {
     });
 });
 
-const loadFlightSelects = (airlineId, originId, destinationId) => {
+const loadFlightSelects = (flight) => {
+    const flightData = JSON.parse(flight);
+    const airlineId = flightData.airline_id;
+    const originId = flightData.origin_city_id;
+    const destinationId = flightData.destination_city_id;
+
     handleAirlineSelection( airlineId, "#edit-origin-select", "#edit-destination-select",
         function () {
             $("#edit-airline-select").val(airlineId).trigger("change");
@@ -122,7 +127,7 @@ const loadFlightSelects = (airlineId, originId, destinationId) => {
 const handleAirlineSelection = (airlineId, origin, destination, callback) => {
     $(`${origin}, ${destination}`).prop("disabled", false);
 
-    axios.get(`api/airlines/${airlineId}/cities`).then(function (response) {
+    axios.get(`/api/airlines/${airlineId}/cities`).then(function (response) {
         const cities = $.map(response.data, function (item) {
             return {
                 id: item.id,
@@ -208,7 +213,6 @@ const loadTable = () => {
     axios(apiURL, { params: { page: currentPage() } })
         .then(function (response) {
             $("#table-body").html(renderTable(response.data.data));
-            console.log(response.data);
             $("#pagination-links").html(getLinks(response.data, apiURL, '/flights'));
         })
         .catch(function (error) {

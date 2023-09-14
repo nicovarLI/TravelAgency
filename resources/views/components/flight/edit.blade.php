@@ -9,11 +9,11 @@
         <span class="text-md pl-3 text-gray-500">Destination</span>
         <select class="mx-auto w-full" style="width: 100%" id="edit-destination-select" name="destination_city_id" required></select>
         <label class="block text-md pl-3 text-gray-500 mb-2" for="departure_at">
-            Departure time
+            Departure at
         </label>
         <input type="datetime-local" x-model="departureTime" x-text="departureTime" id="departure-date" class="px-2 border-gray-400 mb-2 border" name="departure_at" required>
         <label class="block mb-2 text-md pl-3 text-gray-500" for="arrival_at" >
-            Arrival time
+            Arrival at
         </label>
         <input type="datetime-local" x-model="arrivalTime" x-text="arrivalTime" id="arrival-date" class="px-2 border-gray-400 mb-2 border" name="arrival_at" required>
     </div>

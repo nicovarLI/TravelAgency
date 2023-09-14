@@ -19,14 +19,14 @@ class FlightFactory extends Factory
     public function definition(): array
     {
         $airline = Airline::factory()->hasCities(2)->create();
-        $departureTime = CarbonImmutable::now();
+        $departureAt = CarbonImmutable::now();
 
         return [
             'origin_city_id' => $airline->cities[0]->id,
             'destination_city_id' => $airline->cities[1]->id,
             'airline_id'=> $airline->id,
-            'departure_at' => $departureTime->seconds(0),
-            'arrival_at' => $departureTime->addHours(12)->seconds(0),
+            'departure_at' => $departureAt->seconds(0),
+            'arrival_at' => $departureAt->addHours(12)->seconds(0),
         ];
     }
 }
