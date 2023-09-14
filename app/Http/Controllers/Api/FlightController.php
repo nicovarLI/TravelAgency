@@ -2,8 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Http\Requests\StoreFlightRequest;
-use App\Http\Requests\UpdateFlightRequest;
+use App\Http\Requests\UpsertFlightRequest;
 use App\Models\Flight;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Http\JsonResponse;
@@ -19,7 +18,7 @@ class FlightController
             ])->paginate(10);
     }
 
-    public function store(StoreFlightRequest $request): JsonResponse
+    public function store(UpsertFlightRequest $request): JsonResponse
     {
         Flight::create($request->validated());
 
@@ -29,7 +28,7 @@ class FlightController
         ], JsonResponse::HTTP_CREATED);
     }
 
-    public function update(UpdateFlightRequest $request, Flight $flight): JsonResponse
+    public function update(UpsertFlightRequest $request, Flight $flight): JsonResponse
     {
         $flight->update($request->validated());
 
