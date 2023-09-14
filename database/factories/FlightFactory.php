@@ -3,7 +3,7 @@
 namespace Database\Factories;
 
 use App\Models\Airline;
-use App\Models\City;
+use Carbon\CarbonImmutable;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -18,23 +18,15 @@ class FlightFactory extends Factory
      */
     public function definition(): array
     {
-        $airline = Airline::inRandomOrder()->firstOrFail();
-        $cities = $airline->cities;
-
-        $originCity = $cities->random();
-        do {
-            $destinationCity = $cities->random();
-        } while ($originCity->id === $destinationCity->id);
-
-        $departureTime = fake()->dateTime();
-        $arrivalTime = fake()->dateTimeBetween($departureTime, '+8 hours');
+        $airline = Airline::factory()->hasCities(2)->create();
+        $departureTime = CarbonImmutable::now();
 
         return [
-            'origin_city_id' => $originCity->id,
-            'destination_city_id' => $destinationCity->id,
+            'origin_city_id' => $airline->cities[0]->id,
+            'destination_city_id' => $airline->cities[1]->id,
             'airline_id'=> $airline->id,
-            'departure_at' => $departureTime,
-            'arrival_at' => $arrivalTime,
+            'departure_at' => $departureTime->seconds(0),
+            'arrival_at' => $departureTime->addHours(12)->seconds(0),
         ];
     }
 }
