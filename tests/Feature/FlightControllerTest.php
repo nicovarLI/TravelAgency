@@ -169,7 +169,7 @@ class FlightControllerTest extends TestCase
     /** @test */
     public function it_should_delete_an_existing_flight(): void
     {
-        $flight = Flight::factory()->create();
+        $flight = FlightFactory::new()->create();
 
         $this
             ->delete(self::BASE_URL."/{$flight->id}")
