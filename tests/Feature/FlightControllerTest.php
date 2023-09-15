@@ -14,7 +14,7 @@ class FlightControllerTest extends TestCase
 {
     use RefreshDatabase;
 
-    private $baseUrl = '/api/flights';
+    private const BASE_URL = '/api/flights';
 
     protected function setUp(): void
     {
@@ -27,7 +27,7 @@ class FlightControllerTest extends TestCase
     public function it_should_return_a_list_of_flights(): void
     {
         $this
-            ->get($this->baseUrl)
+            ->get(self::BASE_URL)
             ->assertSuccessful()
             ->assertJsonStructure([
                 'data' => [
@@ -47,7 +47,7 @@ class FlightControllerTest extends TestCase
     public function it_should_return_a_list_of_flights_paginated_and_include_pagination_data(): void
     {
         $this
-            ->get("{$this->baseUrl}?page=2")
+            ->get(self::BASE_URL."?page=2")
             ->assertSuccessful()
             ->assertJsonStructure([
                 'data' => [
@@ -83,7 +83,7 @@ class FlightControllerTest extends TestCase
         Flight::truncate();
 
         $this
-            ->get($this->baseUrl)
+            ->get(self::BASE_URL)
             ->assertSuccessful()
             ->assertJson(['data' => []])
             ->assertJson(['total' => 0]);
@@ -101,7 +101,7 @@ class FlightControllerTest extends TestCase
         ];
 
         $this
-            ->postJson($this->baseUrl, $flightData)
+            ->postJson(self::BASE_URL, $flightData)
             ->assertSuccessful()
             ->assertJson([
                 'message' => 'Flight stored.',
@@ -120,7 +120,7 @@ class FlightControllerTest extends TestCase
         $data = $provider['data'];
 
         $this
-            ->postJson($this->baseUrl, $data)
+            ->postJson(self::BASE_URL, $data)
             ->assertUnprocessable()
             ->assertJsonValidationErrors($provider['errors']);
     }
@@ -142,7 +142,7 @@ class FlightControllerTest extends TestCase
         ];
 
         $this
-            ->putJson("{$this->baseUrl}/{$flight->id}", $updatedData)
+            ->putJson(self::BASE_URL."/{$flight->id}", $updatedData)
             ->assertSuccessful()
             ->assertJson([
                 'message' => 'Flight updated.',
@@ -161,7 +161,7 @@ class FlightControllerTest extends TestCase
         $flight = FlightFactory::new()->create();
 
         $this
-            ->putJson("{$this->baseUrl}/{$flight->id}", $provider['data'])
+            ->putJson(self::BASE_URL."/{$flight->id}", $provider['data'])
             ->assertUnprocessable()
             ->assertJsonValidationErrors($provider['errors']);
     }
@@ -172,7 +172,7 @@ class FlightControllerTest extends TestCase
         $flight = Flight::factory()->create();
 
         $this
-            ->delete("{$this->baseUrl}/{$flight->id}")
+            ->delete(self::BASE_URL."/{$flight->id}")
             ->assertSuccessful()
             ->assertJson([
                 'message' => 'Flight deleted.',
@@ -186,7 +186,7 @@ class FlightControllerTest extends TestCase
     public function it_should_return_not_found_when_deleting_invalid_id(): void
     {
         $this
-            ->delete("{$this->baseUrl}/invalid")
+            ->delete(self::BASE_URL."/invalid")
             ->assertNotFound();
     }
 

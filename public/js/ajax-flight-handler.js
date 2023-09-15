@@ -89,7 +89,7 @@ $(document).ready(function () {
     $("#origin-select").select2({
         minimumResultsForSearch: Infinity,
         disabled: true,
-        placeholder: "Select a origin",
+        placeholder: "Select an origin",
     });
     $("#destination-select").select2({
         minimumResultsForSearch: Infinity,

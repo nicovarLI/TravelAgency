@@ -2,7 +2,6 @@
 
 namespace Database\Factories;
 
-use App\Models\Airline;
 use Carbon\CarbonImmutable;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
@@ -18,7 +17,7 @@ class FlightFactory extends Factory
      */
     public function definition(): array
     {
-        $airline = Airline::factory()->hasCities(2)->create();
+        $airline = AirlineFactory::new()->hasCities(2)->create();
         $departureAt = CarbonImmutable::now();
 
         return [

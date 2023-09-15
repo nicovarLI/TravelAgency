@@ -11,11 +11,11 @@
         <label class="block text-md pl-3 text-gray-500 mb-2" for="departure_at">
             Departure at
         </label>
-        <input type="datetime-local" x-model="departureTime" x-text="departureTime" id="departure-date" class="px-2 border-gray-400 mb-2 border" name="departure_at" required>
+        <input type="datetime-local" x-model="departureAt" x-text="departureAt" id="departure-at" class="px-2 border-gray-400 mb-2 border" name="departure_at" required>
         <label class="block mb-2 text-md pl-3 text-gray-500" for="arrival_at" >
             Arrival at
         </label>
-        <input type="datetime-local" x-model="arrivalTime" x-text="arrivalTime" id="arrival-date" class="px-2 border-gray-400 mb-2 border" name="arrival_at" required>
+        <input type="datetime-local" x-model="arrivalAt" x-text="arrivalAt" id="arrival-at" class="px-2 border-gray-400 mb-2 border" name="arrival_at" required>
     </div>
     <x-form.buttons :back-attributes="['@click' => 'show = !show']" :submit-attributes="['@click' => 'updateFlight(flightId)']"/>
 </form>

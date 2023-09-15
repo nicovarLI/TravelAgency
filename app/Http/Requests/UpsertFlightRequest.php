@@ -17,7 +17,7 @@ class UpsertFlightRequest extends FormRequest
             'airline_id' => ['required', 'integer', 'exists:airlines,id'],
             'origin_city_id' => ['required', 'integer', 'exists:cities,id'],
             'destination_city_id' => ['required', 'integer', 'exists:cities,id', 'different:origin_city_id'],
-            'departure_at' => ['required', 'date_format:Y-m-d\TH:i'],
+            'departure_at' => ['required', 'date', 'date_format:Y-m-d\TH:i'],
             'arrival_at' => ['required', 'date', 'date_format:Y-m-d\TH:i', 'after:departure_at'],
         ];
     }

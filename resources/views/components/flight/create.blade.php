@@ -22,9 +22,9 @@
                         <option value="">Select a destination</option>
                     </select>
                     <label class="block mb-2 mt-2 uppercase font-bold text-xs text-gray-700" for="departure_at">Departure at</label>
-                    <input type="datetime-local" id="departure-date" name="departure_at" class="px-2 border-gray-400 mb-2 border" required/>
+                    <input type="datetime-local" id="departure-at" name="departure_at" class="px-2 border-gray-400 mb-2 border" required/>
                     <label class="block mb-2 uppercase font-bold text-xs text-gray-700" for="arrival_at">Arrival at</label>
-                    <input type="datetime-local" id="arrival-date" name="arrival_at" class="px-2 border-gray-400 mb-2 border" required/>
+                    <input type="datetime-local" id="arrival-at" name="arrival_at" class="px-2 border-gray-400 mb-2 border" required/>
                 </div>
                 <div class="mb-6 flex justify-center">
                     <button type="submit" class="bg-blue-400 text-white hover:bg-white hover:text-blue-500 rounded-full py-2 px-4">
