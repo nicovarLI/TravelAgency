@@ -79,12 +79,11 @@ const deleteCityAirline = (airlineId, cities) => {
 }
 
 const loadTable = () => {
-    const page = currentPage();
-    fetch(`${baseURL}?page=${page}`)
+    fetch(`${baseURL}?page=${currentPage()}`)
     .then(response => response.json())
     .then(result => {
         $('#table-body').html(renderTable(result.data))
-        $('#pagination-links').html(getLinks(result, '/api/airlines'));
+        $('#pagination-links').html(getLinks(result, '/api/airlines', '/airlines'));
     })
      .catch(error => {console.error('Load table error: ', error);})
 }
@@ -92,11 +91,11 @@ const loadTable = () => {
 $(document).ready(function () {
     $("#city-select").select2({
         ajax: {
-            url: "/api/cities",
+            url: "/api/cities/all",
             dataType: "json",
             processResults: function (response) {
                 return {
-                    results: $.map(response.data, function (item) {
+                    results: $.map(response, function (item) {
                         return {
                             id: item.id,
                             text: item.name,
@@ -177,11 +176,11 @@ const loadCitySelect = (airlineId) => {
     });
     $("#edit-city-select").select2({
         ajax: {
-            url: "/api/cities",
+            url: "/api/cities/all",
             dataType: "json",
             processResults: function (response) {
                 return {
-                    results: $.map(response.data, function (item) {
+                    results: $.map(response, function (item) {
                         return {
                             id: item.id,
                             text: item.name,

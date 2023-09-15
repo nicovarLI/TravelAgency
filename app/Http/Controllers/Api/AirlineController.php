@@ -5,15 +5,20 @@ namespace App\Http\Controllers\Api;
 use App\Http\Requests\StoreAirlineRequest;
 use App\Http\Requests\UpdateAirlineRequest;
 use App\Models\Airline;
+use Illuminate\Http\Request;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
 
 class AirlineController
 {
     public function index(): LengthAwarePaginator
     {
         return Airline::withCount(['flights'])->paginate(10);
+    }
+
+    public function getAll(): JsonResponse
+    {
+        return response()->json(Airline::all());
     }
 
     public function store(StoreAirlineRequest $request): JsonResponse

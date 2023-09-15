@@ -15,6 +15,11 @@ class CityController
         return City::withCount(['arrivals', 'departures'])->paginate(10);
     }
 
+    public function getAll(): JsonResponse
+    {
+        return response()->json(City::all());
+    }
+
     public function store(StoreCityRequest $request): JsonResponse
     {
         City::create($request->validated());

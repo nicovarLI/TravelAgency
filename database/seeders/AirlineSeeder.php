@@ -2,18 +2,17 @@
 
 namespace Database\Seeders;
 
+use Database\Factories\AirlineFactory;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
-class DatabaseSeeder extends Seeder
+class AirlineSeeder extends Seeder
 {
     /**
-     * Seed the application's database.
+     * Run the database seeds.
      */
     public function run(): void
     {
-        $this->call([
-            FlightSeeder::class
-        ]);
+        AirlineFactory::new()->count(20)->hasCities(2)->create();
     }
 }
